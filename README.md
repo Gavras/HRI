@@ -1,2 +1,3 @@
 # HRI
-Yearly Project.
+
+High Level Design
