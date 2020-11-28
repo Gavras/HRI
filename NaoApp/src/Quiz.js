@@ -103,16 +103,24 @@ class Quiz extends Component {
             <Card bg="light" className="vh-100">
                 <Card.Body bg="light" className="h-100">
                     <Container className="h-100">
-                        <Row className="h-90">
-                            {this.renderQuestions()}
-                            {this.renderNaoPicture()}
-                        </Row>
-                        <Row className="h-10">
-                            {this.renderFooter()}
-                        </Row>
+                        {this.renderMainContent()}
+                        {this.renderFooter()}
                     </Container>
                 </Card.Body>
             </Card>
+        );
+    }
+
+    renderMainContent() {
+        return (
+            <Row noGutters className="h-90 align-items-center justify-content-center">
+                <Col className="h-fc">
+                    {this.renderQuestions()}
+                </Col>
+                <Col className="h-fc">
+                    {this.renderNao()}
+                </Col>
+            </Row>
         );
     }
 
@@ -128,7 +136,7 @@ class Quiz extends Component {
         const {question, options, currentIndex} = this.state;
 
         return (
-            <div>
+            <div className="h-100">
                 <h2>{question}</h2>
                 {
                     options.map(option =>
@@ -160,23 +168,23 @@ class Quiz extends Component {
         );
     }
 
-    renderNaoPicture() {
+    renderNao() {
         const nao_img = require('./images/nao_picture.png').default;
         return (
-            <Image src={nao_img} alt="nao_img" fluid/>
+            <Image src={nao_img} alt="nao_img" fluid className="h-100 max-vh-50"/>
         );
     }
 
     renderFooter() {
         return (
-            <>
+            <Row className="h-10">
                 <Col xs={2} sm={2} className="h-100">
                     {this.renderTechnionImage()}
                 </Col>
                 <Col className="h-100">
                     {this.renderMindfulLabImage()}
                 </Col>
-            </>
+            </Row>
         );
     }
 
