@@ -13,3 +13,9 @@
 .max-vh-50 {
     max-height: 50vh;
 }
+
+.w-questions-card {
+    width: 50%;
+    min-width: fit-content;
+    margin: auto;
+}

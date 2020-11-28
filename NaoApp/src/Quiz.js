@@ -113,7 +113,7 @@ class Quiz extends Component {
 
     renderMainContent() {
         return (
-            <Row noGutters className="h-90 align-items-center justify-content-center">
+            <Row className="h-90 align-items-center">
                 <Col className="h-fc">
                     {this.renderQuestions()}
                 </Col>
@@ -136,35 +136,41 @@ class Quiz extends Component {
         const {question, options, currentIndex} = this.state;
 
         return (
-            <div className="h-100">
-                <h2>{question}</h2>
-                {
-                    options.map(option =>
-                        <Form.Check
-                            type="radio"
-                            id={option}
-                            label={option}
-                            name="radioAnswer"
-                            onClick={() => this.checkAnswer(option)}
-                        />,
-                    )
-                }
-                {currentIndex > 0 &&
-                <button onClick={this.prevQuestionHandler}>
-                    Previous Question
-                </button>}
-                {currentIndex < QuizData.length - 1 &&
-                <button disabled={this.state.disabled} onClick={this.nextQuestionHandler}>
-                    Next Question
-                </button>}
-                {currentIndex === QuizData.length - 1 &&
-                <button onClick={this.finishHandler} disabled={this.state.disabled}>
-                    Finish
-                </button>}
-                <p>
-                    <button onClick={() => alert('Here have some help')}>{'HELP!'}</button>
-                </p>
-            </div>
+            <Card bg="light" className="h-100 w-questions-card">
+                <Card.Header>
+                    {question}
+                </Card.Header>
+                <Card.Body>
+                    <Form>
+                        {
+                            options.map(option =>
+                                <Form.Check
+                                    type="radio"
+                                    id={option}
+                                    label={option}
+                                    name="radioAnswer"
+                                    onClick={() => this.checkAnswer(option)}
+                                />,
+                            )
+                        }
+                        {currentIndex > 0 &&
+                        <button onClick={this.prevQuestionHandler}>
+                            Previous Question
+                        </button>}
+                        {currentIndex < QuizData.length - 1 &&
+                        <button disabled={this.state.disabled} onClick={this.nextQuestionHandler}>
+                            Next Question
+                        </button>}
+                        {currentIndex === QuizData.length - 1 &&
+                        <button onClick={this.finishHandler} disabled={this.state.disabled}>
+                            Finish
+                        </button>}
+                        <p>
+                            <button onClick={() => alert('Here have some help')}>{'HELP!'}</button>
+                        </p>
+                    </Form>
+                </Card.Body>
+            </Card>
         );
     }
 
