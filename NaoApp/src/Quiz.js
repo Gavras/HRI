@@ -5,6 +5,10 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import Form from 'react-bootstrap/Form';
+import Card from "react-bootstrap/Card";
+
+import "./index.css";
 
 class Quiz extends Component {
 
@@ -96,36 +100,24 @@ class Quiz extends Component {
 
     render() {
         return (
-            <Container>
-                <Row xm={3} sm={3} className="align-items-center">
-                    <Col xs={2} sm={2}>
-                        {this.renderTechnionImage()}
-                    </Col>
-                    <Col className="d-flex justify-content-center">
-                        {this.renderQuestions()}
-                    </Col>
-                    <Col>
-                        {this.renderNaoPicture()}
-                    </Col>
-                </Row>
-                <Row className="mt-5">
-                    <Col xs={10} sm={10}>
-                        {this.renderFooter()}
-                    </Col>
-                </Row>
-            </Container>
-        );
-    }
-
-    renderTechnionImage() {
-        const technion_img = require('./images/technion.png').default;
-        return (
-            <Image src={technion_img} alt="technion_img" fluid/>
+            <Card bg="light" className="vh-100">
+                <Card.Body bg="light" className="h-100">
+                    <Container className="h-100">
+                        <Row className="h-90">
+                            {this.renderQuestions()}
+                            {this.renderNaoPicture()}
+                        </Row>
+                        <Row className="h-10">
+                            {this.renderFooter()}
+                        </Row>
+                    </Container>
+                </Card.Body>
+            </Card>
         );
     }
 
     renderQuestions() {
-        const {question, options, currentIndex, userAnswer, quizEnd} = this.state;
+        const {question, options, currentIndex, quizEnd} = this.state;
         if (quizEnd) {
             return (
                 <div>
@@ -176,9 +168,29 @@ class Quiz extends Component {
     }
 
     renderFooter() {
+        return (
+            <>
+                <Col xs={2} sm={2} className="h-100">
+                    {this.renderTechnionImage()}
+                </Col>
+                <Col className="h-100">
+                    {this.renderMindfulLabImage()}
+                </Col>
+            </>
+        );
+    }
+
+    renderTechnionImage() {
+        const technion_img = require('./images/technion.png').default;
+        return (
+            <Image src={technion_img} alt="technion_img" fluid className="h-100"/>
+        );
+    }
+
+    renderMindfulLabImage() {
         const mindful_lab_img = require('./images/mindful_lab.png').default;
         return (
-            <Image src={mindful_lab_img} alt="mindful_lab_img" fluid/>
+            <Image src={mindful_lab_img} alt="mindful_lab_img" fluid className="h-100"/>
         );
     }
 }
