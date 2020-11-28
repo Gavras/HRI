@@ -9,6 +9,7 @@ import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 import Card from "react-bootstrap/Card";
 import "./index.css";
+import Button from "react-bootstrap/Button";
 
 class Quiz extends Component {
 
@@ -115,7 +116,7 @@ class Quiz extends Component {
         return (
             <Row className="h-90 align-items-center">
                 <Col className="h-fc">
-                    {this.renderQuestions()}
+                    {this.renderQuestion()}
                 </Col>
                 <Col className="h-fc">
                     {this.renderNao()}
@@ -124,7 +125,7 @@ class Quiz extends Component {
         );
     }
 
-    renderQuestions() {
+    renderQuestion() {
         if (this.state.quizEnd) {
             return (
                 <Alert variant="success">
@@ -133,44 +134,67 @@ class Quiz extends Component {
             );
         }
 
-        const {question, options, currentIndex} = this.state;
-
         return (
             <Card bg="light" className="h-100 w-questions-card">
                 <Card.Header>
-                    {question}
+                    {this.state.question}
                 </Card.Header>
                 <Card.Body>
                     <Form>
-                        {
-                            options.map(option =>
-                                <Form.Check
-                                    type="radio"
-                                    id={option}
-                                    label={option}
-                                    name="radioAnswer"
-                                    onClick={() => this.checkAnswer(option)}
-                                />,
-                            )
-                        }
-                        {currentIndex > 0 &&
-                        <button onClick={this.prevQuestionHandler}>
-                            Previous Question
-                        </button>}
-                        {currentIndex < QuizData.length - 1 &&
-                        <button disabled={this.state.disabled} onClick={this.nextQuestionHandler}>
-                            Next Question
-                        </button>}
-                        {currentIndex === QuizData.length - 1 &&
-                        <button onClick={this.finishHandler} disabled={this.state.disabled}>
-                            Finish
-                        </button>}
-                        <p>
-                            <button onClick={() => alert('Here have some help')}>{'HELP!'}</button>
-                        </p>
+                        {this.renderAnswerOptions()}
+                        {this.renderActionButtons()}
                     </Form>
                 </Card.Body>
             </Card>
+        );
+    }
+
+    renderAnswerOptions() {
+        return this.state.options.map(option =>
+            <Form.Check
+                type="radio"
+                id={option}
+                label={option}
+                name="radioAnswerOption"
+                onClick={() => this.checkAnswer(option)}
+            />,
+        );
+    }
+
+    renderActionButtons() {
+        const {currentIndex} = this.state;
+
+        const prevButton = currentIndex > 0 ?
+            <Button onClick={this.prevQuestionHandler}>
+                Previous Question
+            </Button> : null;
+
+        const nextButton = currentIndex < QuizData.length - 1 ?
+            <Button disabled={this.state.disabled} onClick={this.nextQuestionHandler}>
+                Next Question
+            </Button> : null;
+
+        const finishButton = currentIndex === QuizData.length - 1 ?
+            <Button onClick={this.finishHandler} disabled={this.state.disabled}>
+                Finish
+            </Button> : null;
+
+        const helpButton =
+            <Button
+                variant="info" className="mt-2"
+                onClick={() => alert('Here have some help')}
+            >
+                {'HELP!'}
+            </Button>;
+
+        return (
+            <div className="mt-2">
+                {prevButton}
+                {nextButton}
+                {finishButton}
+                <br/>
+                {helpButton}
+            </div>
         );
     }
 
