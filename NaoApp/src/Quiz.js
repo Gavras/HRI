@@ -92,13 +92,12 @@ class Quiz extends Component {
                 };
             });
         }
-
     }
 
     render() {
         return (
             <Container>
-                <Row xm={3} sm={3}>
+                <Row xm={3} sm={3} className="align-items-center">
                     <Col xs={2} sm={2}>
                         {this.renderTechnionImage()}
                     </Col>
@@ -140,12 +139,15 @@ class Quiz extends Component {
             <div>
                 <h2>{question}</h2>
                 <span>{`Question ${currentIndex + 1} of ${QuizData.length}\n`}</span> {
-                options.map(option => <p
-                    key={option.id}
-                    className={`options ${userAnswer === option ? "selected" : null}`}
-                    onClick={() => this.checkAnswer(option)}>
-                    {option}
-                </p>)
+                options.map(option =>
+                    <Form.Check
+                        type="radio"
+                        id={option}
+                        label={option}
+                        name="radioAnswer"
+                        onClick={() => this.checkAnswer(option)}
+                    />,
+                )
             }
                 {currentIndex > 0 &&
                 <button onClick={this.prevQuestionHandler}>
