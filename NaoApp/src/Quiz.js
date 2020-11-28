@@ -18,85 +18,13 @@ class Quiz extends Component {
         this.state = {
             userAnswer: null,
             currentIndex: 0,
-            options: [],
+            question: QuizData[0].question,
+            options: QuizData[0].options,
+            answer: QuizData[0].answer,
             quizEnd: false,
             score: 0,
             disabled: false,
         };
-    }
-
-    loadQuiz = () => {
-        const {currentIndex} = this.state;
-        this.setState(() => {
-            return {
-                question: QuizData[currentIndex].question,
-                options: QuizData[currentIndex].options,
-                answer: QuizData[currentIndex].answer,
-            };
-        });
-    };
-
-    nextQuestionHandler = () => {
-        const {userAnswer, realAnswer, score} = this.state;
-
-        if (userAnswer === realAnswer) {
-            this.setState({
-                score: this.state.score + 1,
-            });
-        }
-
-        this.setState({
-            currentIndex: this.state.currentIndex + 1,
-            userAnswer: null,
-        });
-    };
-
-    prevQuestionHandler = () => {
-        const {userAnswer, realAnswer, score} = this.state;
-
-        if (userAnswer === realAnswer) {
-            this.setState({
-                score: this.state.score + 1,
-            });
-        }
-
-        this.setState({
-            currentIndex: this.state.currentIndex - 1,
-            userAnswer: null,
-        });
-    };
-
-    componentDidMount() {
-        this.loadQuiz();
-    }
-
-    checkAnswer = answer => {
-        this.setState({
-            userAnswer: answer,
-            disabled: false,
-        });
-    };
-
-    finishHandler = () => {
-        if (this.state.currentIndex === QuizData.length - 1) {
-            this.setState({
-                quizEnd: true,
-            });
-        }
-    };
-
-    componentDidUpdate(prevProps, prevState) {
-        const {currentIndex} = this.state;
-        if (this.state.currentIndex != [prevState.currentIndex]) {
-            this.setState(() => {
-                return {
-                    disabled: true,
-                    question: QuizData[currentIndex].question,
-                    options: QuizData[currentIndex].options,
-                    answer: QuizData[currentIndex].answer,
-                };
-            });
-        }
     }
 
     render() {
@@ -156,7 +84,7 @@ class Quiz extends Component {
                 id={option}
                 label={option}
                 name="radioAnswerOption"
-                onClick={() => this.checkAnswer(option)}
+                onClick={() => this.onAnswerOptionClick(option)}
             />,
         );
     }
@@ -165,26 +93,26 @@ class Quiz extends Component {
         const {currentIndex} = this.state;
 
         const prevButton = currentIndex > 0 ?
-            <Button onClick={this.prevQuestionHandler}>
+            <Button onClick={this.OnPrevButtonClick}>
                 Previous Question
             </Button> : null;
 
         const nextButton = currentIndex < QuizData.length - 1 ?
-            <Button disabled={this.state.disabled} onClick={this.nextQuestionHandler}>
+            <Button disabled={this.state.disabled} onClick={this.OnNextButtonClick}>
                 Next Question
             </Button> : null;
 
         const finishButton = currentIndex === QuizData.length - 1 ?
-            <Button onClick={this.finishHandler} disabled={this.state.disabled}>
+            <Button onClick={this.onFinishButtonClick} disabled={this.state.disabled}>
                 Finish
             </Button> : null;
 
-        const helpButton =
+        const askNaoButton =
             <Button
                 variant="info" className="mt-2"
-                onClick={() => alert('Here have some help')}
+                onClick={this.onAskNaoButtonClick}
             >
-                {'HELP!'}
+                {'Ask Nao'}
             </Button>;
 
         return (
@@ -193,7 +121,7 @@ class Quiz extends Component {
                 {nextButton}
                 {finishButton}
                 <br/>
-                {helpButton}
+                {askNaoButton}
             </div>
         );
     }
@@ -231,6 +159,54 @@ class Quiz extends Component {
             <Image src={mindful_lab_img} alt="mindful_lab_img" fluid className="h-100"/>
         );
     }
+
+    onAnswerOptionClick = answer => {
+        this.setState({
+            userAnswer: answer,
+            disabled: false,
+        });
+    };
+
+    OnPrevButtonClick = () => {
+        const {userAnswer, realAnswer} = this.state;
+
+        if (userAnswer === realAnswer) {
+            this.setState({
+                score: this.state.score + 1,
+            });
+        }
+
+        this.setState({
+            currentIndex: this.state.currentIndex - 1,
+            userAnswer: null,
+        });
+    };
+
+    OnNextButtonClick = () => {
+        const {userAnswer, realAnswer} = this.state;
+
+        if (userAnswer === realAnswer) {
+            this.setState({
+                score: this.state.score + 1,
+            });
+        }
+
+        this.setState({
+            currentIndex: this.state.currentIndex + 1,
+            userAnswer: null,
+        });
+    };
+
+    onFinishButtonClick = () => {
+        if (this.state.currentIndex === QuizData.length - 1) {
+            this.setState({
+                quizEnd: true,
+            });
+        }
+    };
+
+    onAskNaoButtonClick = () => {
+    };
 }
 
 export default Quiz;
