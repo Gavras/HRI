@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {QuizData} from './QuizData.js';
 import "bootstrap/dist/css/bootstrap.css";
+import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 import Card from "react-bootstrap/Card";
-
 import "./index.css";
 
 class Quiz extends Component {
@@ -117,30 +117,30 @@ class Quiz extends Component {
     }
 
     renderQuestions() {
-        const {question, options, currentIndex, quizEnd} = this.state;
-        if (quizEnd) {
+        if (this.state.quizEnd) {
             return (
-                <div>
-                    <h1>Good job!</h1>
-                    <p>The correct answers were: Fruit, פרי, 水果</p>
-                </div>
+                <Alert variant="success">
+                    Good job!
+                </Alert>
             );
         }
+
+        const {question, options, currentIndex} = this.state;
 
         return (
             <div>
                 <h2>{question}</h2>
-                <span>{`Question ${currentIndex + 1} of ${QuizData.length}\n`}</span> {
-                options.map(option =>
-                    <Form.Check
-                        type="radio"
-                        id={option}
-                        label={option}
-                        name="radioAnswer"
-                        onClick={() => this.checkAnswer(option)}
-                    />,
-                )
-            }
+                {
+                    options.map(option =>
+                        <Form.Check
+                            type="radio"
+                            id={option}
+                            label={option}
+                            name="radioAnswer"
+                            onClick={() => this.checkAnswer(option)}
+                        />,
+                    )
+                }
                 {currentIndex > 0 &&
                 <button onClick={this.prevQuestionHandler}>
                     Previous Question
