@@ -1,35 +1,21 @@
-.App{
-    text-align: center;
-    font-family: Arial;
+.h-90 {
+    height: 90%;
 }
 
-.selected {
-    background: yellow !important;
+.h-10 {
+    height: 10%;
 }
 
-.options {
-    padding: 8px;
-    border: 3px solid #000;
-    cursor: pointer;
-    width:100%;
-    background-color: white;
-    color: #c4cdd4;
-    font-weight: bold;
+.h-fc {
+    height: fit-content;
 }
 
-ul {
-    list-style-type: none;
+.max-vh-50 {
+    max-height: 50vh;
 }
 
-ul li {
-    margin: 5px;
+.w-questions-card {
+    width: 50%;
+    min-width: fit-content;
+    margin: auto;
 }
-
-body{
-    display: flex;
-    justify-content: center;    
-    color:white;
-    font-family: 'Segoe UI',;
-    font-size: 18px;
-    background-color: rgb(1, 143, 143);
- }
