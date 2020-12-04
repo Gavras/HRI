@@ -12,27 +12,17 @@ Backend server is at localhost:8002
 
 Messages from react app to backend server:
 
-1) localhost:8002/get_question - retreive a question from the server.
+1) localhost:8002/get_question - retrieve a question from the server.
     PARAMS: No params.
     RESPONSE: a string containing a question and all possible answers.
     
-2) localhost:8002/skip_question - skip current question
-    PARAMS: No params.
-    RESPONSE: a string containing the next question and all possible answers
-    
-3) localhost:8002/previous_question - return to previous question
-    PARAMS: No params.
-    RESPONSE: a string containing the previous question and all possible answers.
-    
-4) localhost:8002/submit_answer - send an answer to the backend server.
+2) localhost:8002/submit_answer - send an answer to the backend server.
     PARAMS: Answer number.
     RESPONSE: a string containing "CORRECT" on correct answer and "WRONG" on wrong answer.
     
-5) localhost:8002/get_hint - get a hint to current question
+3) localhost:8002/get_hint - get a hint to current question
     PARAMS: No params.
     RESPONSE: a string containing the hint for current question
-    
-6) ...
     
 Messages from Nao to backend server:
 
