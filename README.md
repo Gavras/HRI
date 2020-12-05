@@ -10,3 +10,12 @@
 ### Open the app
 - Open terminal and cd to NaoApp directory
 - `npm start`
+
+### Open backend services
+- pre-requiestes:
+    - python3.6+
+    - pip install -r requirements.txt
+
+
+- Open terminal and cd to backend/Server
+- python main.py
