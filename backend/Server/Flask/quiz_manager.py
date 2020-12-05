@@ -11,28 +11,30 @@ class QuizManager:
         config.read(config_file_path)
         app_config = config['config']
 
+        # Network configs
         self.nao_ip = app_config['nao_ip']
         self.nao_port = app_config.getint('nao_port')
         self.app_port = app_config.getint('app_port')
         self.backend_port = app_config.getint('backend_port')
+
+        # Quiz config
         quiz_file_path = app_config['quiz_file_path']
-        # generate a dictionary of questions
         self.questions, self.possible_answers, self.correct_answers, self.hints, \
             self.positive_responses, self.negative_responses = self.parse_quiz(quiz_file_path)
         self.current_question_idx = 0
 
-    # return current question representation
+    # return current question
     def get_question(self):
         question = {'question': self.questions[self.current_question_idx],
                     'possible_answers': self.possible_answers[self.current_question_idx]}
         return question
 
-    # check if given answer is the correct answer for current question
+    # check if submitted answer is in-fact the correct answer
     def check_answer(self, answer):
         # check if the answer provided matches the correct answer
         return self.correct_answers[self.current_question_idx] == answer
 
-    # submit given answer and return response based on success
+    # submit answer and return response based on success
     def submit_answer(self, answer):
         # extract correct response and move to next question if the answer is correct
         if self.check_answer(answer):

@@ -1,5 +1,4 @@
 from flask import Flask, request
-from redis import Redis
 from backend.Server.Flask.quiz_manager import QuizManager
 
 # main Flask app
