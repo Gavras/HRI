@@ -1,0 +1,18 @@
+{
+  "question_1": {
+      "question": "What is an apple?",
+      "possible_answers": ["vegetable", "fruit", "instrument", "animal"],
+      "correct_answer": "fruit",
+      "hint": "It is not a vegetable",
+      "positive_response": "Good Job!",
+      "negative_response": "Try Again!"
+    },
+  "question_2": {
+    "question": "How many lines are in a rectangle?",
+    "possible_answers": ["Two", "Three", "Four", "Five"],
+    "correct_answer": "Four",
+    "hint": "It is an even number",
+    "positive_response": "Great Job!",
+    "negative_response": "Oops, Try Again!"
+  }
+}
