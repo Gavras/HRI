@@ -1,5 +1,5 @@
 from flask import Flask, request
-from backend.Server.Flask.quiz_manager import QuizManager
+from quiz_manager import QuizManager
 
 # main Flask app
 app = Flask(__name__)
