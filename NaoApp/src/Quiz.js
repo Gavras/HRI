@@ -30,6 +30,11 @@ class Quiz extends Component {
         const xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                for (const [ref, object] of Object.entries(this.refs)) {
+                    if (ref.startsWith('radioAnswerOption')) {
+                        object.checked = false;
+                    }
+                }
                 this.setState({
                     question: JSON.parse(xmlHttp.responseText),
                     userAnswer: null,
@@ -121,14 +126,6 @@ class Quiz extends Component {
     }
 
     renderQuestion() {
-        if (this.state.quizEnd) {
-            return (
-                <Alert variant="success">
-                    Good job!
-                </Alert>
-            );
-        }
-
         if (this.state.question == null) {
             return null;
         }
@@ -149,10 +146,11 @@ class Quiz extends Component {
     }
 
     renderAnswerOptions() {
-        return this.state.question.possible_answers.map(option =>
+        return this.state.question.possible_answers.map((option, i) =>
             <Form.Check
                 type="radio"
                 id={option}
+                ref={'radioAnswerOption' + i}
                 label={option}
                 name="radioAnswerOption"
                 onClick={() => this.onAnswerOptionClick(option)}
@@ -163,7 +161,7 @@ class Quiz extends Component {
     renderActionButtons() {
         const submitButton =
             <Button onClick={this.onSubmitButtonClick}>
-                Submit Question
+                Submit
             </Button>;
 
         const nextButton =
