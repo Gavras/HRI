@@ -29,9 +29,9 @@ class QuizManager:
 
     # return current question
     def get_question(self):
+        self.current_question_idx = (self.current_question_idx + 1) % len(self.questions)
         question = {'question': self.questions[self.current_question_idx],
                     'possible_answers': self.possible_answers[self.current_question_idx]}
-        self.current_question_idx = (self.current_question_idx + 1) % len(self.questions)
         return question
 
     # check if submitted answer is in-fact the correct answer
