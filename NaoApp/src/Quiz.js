@@ -24,6 +24,7 @@ class Quiz extends Component {
             quizEnd: false,
             score: 0,
             disabled: false,
+            started: false
         };
     }
 
@@ -41,15 +42,32 @@ class Quiz extends Component {
     }
 
     renderMainContent() {
+        const column = this.state.started ? this.renderQuizContent() : this.renderLandingPage();
         return (
-            <Row className="h-90 align-items-center">
-                <Col className="h-fc">
+            <Row className="h-90 align-items-center justify-content-center">
+                {column}
+            </Row>
+        );
+    }
+
+    renderLandingPage() {
+        return (
+            <Col xs={6} sm={6} className="h-fc w-fc">
+                {this.renderStartButton()}
+            </Col>
+        );
+    }
+
+    renderQuizContent() {
+        return (
+            <>
+                <Col xs={{offset:3}} ms={{offset:3}} className="h-fc">
                     {this.renderQuestion()}
                 </Col>
                 <Col className="h-fc">
                     {this.renderNao()}
                 </Col>
-            </Row>
+            </>
         );
     }
 
@@ -133,6 +151,14 @@ class Quiz extends Component {
         );
     }
 
+    renderStartButton() {
+        const start_button_img = require('./images/start_picture.png').default;
+        return (
+            <Image src={start_button_img} alt="start_button_img" fluid className="h-100 max-vh-50"
+                   onClick={() => this.onStartButtonClick()}/>
+        );
+    }
+
     renderFooter() {
         return (
             <Row className="h-10">
@@ -206,6 +232,13 @@ class Quiz extends Component {
     };
 
     onAskNaoButtonClick = () => {
+        alert("apples grow on trees");
+    };
+
+    onStartButtonClick = () => {
+        this.setState({
+            started: true,
+        });
     };
 }
 
