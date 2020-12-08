@@ -14,7 +14,7 @@
     "react-bootstrap": "^1.4.0"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "set PORT=8000 && react-scripts start"
   },
   "browserslist": [
     ">0.2%",
