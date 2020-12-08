@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {QuizData} from './QuizData.js';
 import "bootstrap/dist/css/bootstrap.css";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
@@ -13,19 +12,61 @@ import Button from "react-bootstrap/Button";
 
 class Quiz extends Component {
 
+    BACKEND_URL = 'http://localhost:8002/';
+
     constructor(props) {
         super(props);
         this.state = {
+            question: null,
             userAnswer: null,
-            currentIndex: 0,
-            question: QuizData[0].question,
-            options: QuizData[0].options,
-            answer: QuizData[0].answer,
-            quizEnd: false,
-            score: 0,
-            disabled: false,
-            started: false
+            serverSubmitAnswer: null,
+            hint: null,
+            started: false,
         };
+        this.getQuestion();
+    }
+
+    getQuestion() {
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                this.setState({
+                    question: JSON.parse(xmlHttp.responseText),
+                    userAnswer: null,
+                    serverSubmitAnswer: null,
+                    hint: null,
+                });
+            }
+        }.bind(this);
+        xmlHttp.open('GET', this.BACKEND_URL + 'get_question', true);
+        xmlHttp.send(null);
+    }
+
+    getServerSubmitAnswer() {
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                this.setState({
+                    serverSubmitAnswer: xmlHttp.responseText,
+                });
+            }
+        }.bind(this);
+        const url = this.BACKEND_URL + 'submit_answer?answer=' + this.state.userAnswer;
+        xmlHttp.open('GET', url, true);
+        xmlHttp.send(null);
+    }
+
+    getHint() {
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                this.setState({
+                    hint: xmlHttp.responseText,
+                });
+            }
+        }.bind(this);
+        xmlHttp.open('GET', this.BACKEND_URL + 'get_hint', true);
+        xmlHttp.send(null);
     }
 
     render() {
@@ -42,10 +83,10 @@ class Quiz extends Component {
     }
 
     renderMainContent() {
-        const column = this.state.started ? this.renderQuizContent() : this.renderLandingPage();
+        const row = this.state.started ? this.renderQuizContent() : this.renderLandingPage();
         return (
             <Row className="h-90 align-items-center justify-content-center">
-                {column}
+                {row}
             </Row>
         );
     }
@@ -58,10 +99,18 @@ class Quiz extends Component {
         );
     }
 
+    renderStartButton() {
+        const start_button_img = require('./images/start_picture.png').default;
+        return (
+            <Image src={start_button_img} alt="start_button_img" fluid className="h-100 max-vh-50"
+                   onClick={() => this.onStartButtonClick()}/>
+        );
+    }
+
     renderQuizContent() {
         return (
             <>
-                <Col xs={{offset:3}} ms={{offset:3}} className="h-fc">
+                <Col className="h-fc">
                     {this.renderQuestion()}
                 </Col>
                 <Col className="h-fc">
@@ -80,10 +129,14 @@ class Quiz extends Component {
             );
         }
 
+        if (this.state.question == null) {
+            return null;
+        }
+
         return (
             <Card bg="light" className="h-100 w-questions-card">
                 <Card.Header>
-                    {this.state.question}
+                    {this.state.question.question}
                 </Card.Header>
                 <Card.Body>
                     <Form>
@@ -96,7 +149,7 @@ class Quiz extends Component {
     }
 
     renderAnswerOptions() {
-        return this.state.options.map(option =>
+        return this.state.question.possible_answers.map(option =>
             <Form.Check
                 type="radio"
                 id={option}
@@ -108,39 +161,58 @@ class Quiz extends Component {
     }
 
     renderActionButtons() {
-        const {currentIndex} = this.state;
+        const submitButton =
+            <Button onClick={this.onSubmitButtonClick}>
+                Submit Question
+            </Button>;
 
-        const prevButton = currentIndex > 0 ?
-            <Button onClick={this.OnPrevButtonClick}>
-                Previous Question
-            </Button> : null;
-
-        const nextButton = currentIndex < QuizData.length - 1 ?
-            <Button disabled={this.state.disabled} onClick={this.OnNextButtonClick}>
+        const nextButton =
+            <Button
+                onClick={this.onNextButtonClick}
+                className="ml-1">
                 Next Question
-            </Button> : null;
-
-        const finishButton = currentIndex === QuizData.length - 1 ?
-            <Button onClick={this.onFinishButtonClick} disabled={this.state.disabled}>
-                Finish
-            </Button> : null;
+            </Button>;
 
         const askNaoButton =
             <Button
                 variant="info" className="mt-2"
-                onClick={this.onAskNaoButtonClick}
-            >
-                {'Ask Nao'}
+                onClick={this.onAskNaoButtonClick}>
+                Ask Nao
             </Button>;
 
         return (
             <div className="mt-2">
-                {prevButton}
+                {submitButton}
                 {nextButton}
-                {finishButton}
+                {this.renderSubmitResponse()}
                 <br/>
                 {askNaoButton}
+                {this.renderHintResponse()}
             </div>
+        );
+    }
+
+    renderSubmitResponse() {
+        if (this.state.serverSubmitAnswer == null) {
+            return null;
+        }
+
+        return (
+            <Alert variant="success" className="m-0 mt-1">
+                {this.state.serverSubmitAnswer}
+            </Alert>
+        );
+    }
+
+    renderHintResponse() {
+        if (this.state.hint == null) {
+            return null;
+        }
+
+        return (
+            <Alert variant="success" className="m-0 mt-1">
+                {this.state.hint}
+            </Alert>
         );
     }
 
@@ -148,14 +220,6 @@ class Quiz extends Component {
         const nao_img = require('./images/nao_picture.png').default;
         return (
             <Image src={nao_img} alt="nao_img" fluid className="h-100 max-vh-50"/>
-        );
-    }
-
-    renderStartButton() {
-        const start_button_img = require('./images/start_picture.png').default;
-        return (
-            <Image src={start_button_img} alt="start_button_img" fluid className="h-100 max-vh-50"
-                   onClick={() => this.onStartButtonClick()}/>
         );
     }
 
@@ -189,50 +253,26 @@ class Quiz extends Component {
     onAnswerOptionClick = answer => {
         this.setState({
             userAnswer: answer,
-            disabled: false,
         });
     };
 
-    OnPrevButtonClick = () => {
-        const {userAnswer, realAnswer} = this.state;
-
-        if (userAnswer === realAnswer) {
+    onSubmitButtonClick = () => {
+        if (this.state.userAnswer == null) {
             this.setState({
-                score: this.state.score + 1,
+                serverSubmitAnswer: "Please choose an answer",
             });
+            return;
         }
 
-        this.setState({
-            currentIndex: this.state.currentIndex - 1,
-            userAnswer: null,
-        });
+        this.getServerSubmitAnswer();
     };
 
-    OnNextButtonClick = () => {
-        const {userAnswer, realAnswer} = this.state;
-
-        if (userAnswer === realAnswer) {
-            this.setState({
-                score: this.state.score + 1,
-            });
-        }
-
-        this.setState({
-            currentIndex: this.state.currentIndex + 1,
-            userAnswer: null,
-        });
-    };
-
-    onFinishButtonClick = () => {
-        if (this.state.currentIndex === QuizData.length - 1) {
-            this.setState({
-                quizEnd: true,
-            });
-        }
+    onNextButtonClick = () => {
+        this.getQuestion();
     };
 
     onAskNaoButtonClick = () => {
-        alert("apples grow on trees");
+        this.getHint();
     };
 
     onStartButtonClick = () => {

@@ -17,8 +17,8 @@ def get_question():
 
 @app.route('/submit_answer', methods=['POST', 'GET'])
 def submit_answer():
-    answer = request.form.get('answer')
-    print('backend got submit_answer request!')
+    answer = request.args.get('answer')
+    print(f'backend got submit_answer request! answer={answer}')
     return create_response(manager.submit_answer(answer))
 
 
