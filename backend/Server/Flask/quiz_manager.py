@@ -6,7 +6,7 @@ from configparser import ConfigParser
 class QuizManager:
     def __init__(self):
         # read and extract config from file to a dictionary of parameters
-        config_file_path = os.path.join('C:\\', 'Users', 'razda', 'Desktop', 'HRI', 'backend', 'Server', 'Flask', 'config.ini')
+        config_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
         config = ConfigParser()
         config.read(config_file_path)
         app_config = config['config']
@@ -18,7 +18,11 @@ class QuizManager:
         self.backend_port = app_config.getint('backend_port')
 
         # Quiz config
-        quiz_file_path = app_config['quiz_file_path']
+        config_quiz_file_path = app_config['quiz_file_path']
+        if os.path.isabs(config_quiz_file_path):
+            quiz_file_path = config_quiz_file_path
+        else:
+            quiz_file_path = os.path.abspath(os.path.join(os.path.dirname(config_file_path), config_quiz_file_path))
         self.questions, self.possible_answers, self.correct_answers, self.hints, \
             self.positive_responses, self.negative_responses = self.parse_quiz(quiz_file_path)
         self.current_question_idx = 0
