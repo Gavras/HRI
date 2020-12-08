@@ -31,6 +31,7 @@ class QuizManager:
     def get_question(self):
         question = {'question': self.questions[self.current_question_idx],
                     'possible_answers': self.possible_answers[self.current_question_idx]}
+        self.current_question_idx = (self.current_question_idx + 1) % len(self.questions)
         return question
 
     # check if submitted answer is in-fact the correct answer
@@ -51,10 +52,6 @@ class QuizManager:
     # return current hint
     def get_hint(self):
         return self.hints[self.current_question_idx]
-
-    # advance to the next question
-    def next_question(self):
-        self.current_question_idx = (self.current_question_idx + 1) % len(self.questions)
 
     # parse the quiz json file
     @staticmethod
