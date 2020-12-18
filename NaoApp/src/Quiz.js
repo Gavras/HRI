@@ -178,17 +178,19 @@ class Quiz extends Component {
     }
 
     renderActionButtons() {
-        const submitButton =
-            <Button onClick={this.onSubmitButtonClick}>
+        const submitButton = this.isCorrectAnswer() ?
+            null :
+            (<Button onClick={this.onSubmitButtonClick}>
                 Submit
-            </Button>;
+            </Button>);
 
-        const nextButton =
-            <Button
+        const nextButton = this.isCorrectAnswer() ?
+            (<Button
                 onClick={this.onNextButtonClick}
                 className="ml-1">
                 Next Question
-            </Button>;
+            </Button>) :
+            null;
 
         const askNaoButton =
             <Button
@@ -214,7 +216,7 @@ class Quiz extends Component {
             return null;
         }
 
-        const variant = this.state.serverSubmitAnswer.answer === "correct" ? "success" : "danger";
+        const variant = this.isCorrectAnswer() ? "success" : "danger";
 
         return (
             <Alert variant={variant} className="m-0 mt-1">
@@ -269,7 +271,20 @@ class Quiz extends Component {
         );
     }
 
+    isCorrectAnswer() {
+        return this.state.serverSubmitAnswer &&
+            this.state.serverSubmitAnswer.answer === "correct";
+    }
+
     onAnswerOptionClick = answer => {
+        if (this.isCorrectAnswer()) {
+            for (const [ref, object] of Object.entries(this.refs)) {
+                if (ref.startsWith('radioAnswerOption')) {
+                    object.checked = ref === 'radioAnswerOption' + this.state.userAnswer;
+                }
+            }
+            return;
+        }
         this.setState({
             userAnswer: answer,
         });
