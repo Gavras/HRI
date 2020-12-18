@@ -11,8 +11,13 @@ manager = QuizManager()
 
 @app.route('/get_question', methods=['POST', 'GET'])
 def get_question():
-    print('backend got get_question request!')
-    return create_response(manager.get_question())
+    if 'idx' in request.args:
+        idx = request.args.get('idx')
+    else:
+        idx = None
+    idx_text = f' idx={idx}' if idx != None else ''
+    print(f'backend got get_question request!{idx_text}')
+    return create_response(manager.get_question(idx))
 
 
 @app.route('/submit_answer', methods=['POST', 'GET'])

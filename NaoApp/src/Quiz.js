@@ -10,6 +10,12 @@ import Card from "react-bootstrap/Card";
 import "./index.css";
 import Button from "react-bootstrap/Button";
 
+const Phase = Object.freeze({
+    "started": 1,
+    "quiz": 2,
+    "ended": 3,
+});
+
 class Quiz extends Component {
 
     BACKEND_URL = 'http://localhost:8002/';
@@ -21,12 +27,11 @@ class Quiz extends Component {
             userAnswer: null,
             serverSubmitAnswer: null,
             hint: null,
-            started: false,
+            phase: Phase.started,
         };
-        this.getQuestion();
     }
 
-    getQuestion() {
+    getQuestion(first = false) {
         const xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
@@ -35,15 +40,23 @@ class Quiz extends Component {
                         object.checked = false;
                     }
                 }
+                const question = JSON.parse(xmlHttp.responseText);
+                let phase = Phase.quiz;
+                if (question.question === "No More Questions!") {
+                    phase = Phase.ended;
+                }
                 this.setState({
-                    question: JSON.parse(xmlHttp.responseText),
+                    question: question,
                     userAnswer: null,
                     serverSubmitAnswer: null,
                     hint: null,
+                    phase: phase,
                 });
             }
         }.bind(this);
-        xmlHttp.open('GET', this.BACKEND_URL + 'get_question', true);
+        const url_suffix = first ? '?idx=0' : '';
+        const url = this.BACKEND_URL + 'get_question' + url_suffix;
+        xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
 
@@ -52,7 +65,7 @@ class Quiz extends Component {
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                 this.setState({
-                    serverSubmitAnswer: xmlHttp.responseText,
+                    serverSubmitAnswer: JSON.parse(xmlHttp.responseText),
                 });
             }
         }.bind(this);
@@ -76,9 +89,9 @@ class Quiz extends Component {
 
     render() {
         return (
-            <Card bg="light" className="vh-100">
-                <Card.Body bg="light" className="h-100">
-                    <Container className="h-100">
+            <Card bg="light" className="vh-100 vw-100 justify-content-center">
+                <Card.Body bg="light" className="h-100 w-100 justify-content-center">
+                    <Container className="h-100 w-100 justify-content-center">
                         {this.renderMainContent()}
                         {this.renderFooter()}
                     </Container>
@@ -88,27 +101,60 @@ class Quiz extends Component {
     }
 
     renderMainContent() {
-        const row = this.state.started ? this.renderQuizContent() : this.renderLandingPage();
+        let column = null;
+        switch (this.state.phase) {
+            case Phase.started:
+                column = this.renderLandingPage();
+                break;
+            case Phase.quiz:
+                column = this.renderQuizContent();
+                break;
+            case Phase.ended:
+                column = this.renderQuizContent();
+                break;
+        }
+
         return (
-            <Row className="h-90 align-items-center justify-content-center">
-                {row}
+            <Row className="h-90 w-100 m-auto align-items-center justify-content-center">
+                {column}
             </Row>
         );
     }
 
     renderLandingPage() {
         return (
-            <Col xs={6} sm={6} className="h-fc w-fc">
-                {this.renderStartButton()}
+            <Col className="h-100 w-100 justify-content-center">
+                <Container className="h-100 w-100 justify-content-center">
+                    <Row className="h-80 w-100 m-auto justify-content-center">
+                        <Col className="h-100 w-100 d-flex justify-content-center">
+                            {this.renderStartQuizGif()}
+                        </Col>
+                    </Row>
+                    <Row className="h-20 mt-1 justify-content-center align-items-center">
+                        <Col className="d-flex justify-content-center">
+                            {this.renderStartButton()}
+                        </Col>
+                    </Row>
+                </Container>
             </Col>
         );
     }
 
-    renderStartButton() {
-        const start_button_img = require('./images/start_picture.png').default;
+    renderStartQuizGif() {
+        const start_gif = require('./media/gifs/start_quiz.gif').default;
         return (
-            <Image src={start_button_img} alt="start_button_img" fluid className="h-100 max-vh-50"
+            <Image src={start_gif} alt="start_gif" fluid className="h-100"
                    onClick={() => this.onStartButtonClick()}/>
+        );
+    }
+
+    renderStartButton() {
+        return (
+            <Button className=""
+                    variant="success"
+                    onClick={() => this.onStartButtonClick()}>
+                Start Quiz
+            </Button>
         );
     }
 
@@ -153,40 +199,70 @@ class Quiz extends Component {
                 ref={'radioAnswerOption' + i}
                 label={option}
                 name="radioAnswerOption"
-                onClick={() => this.onAnswerOptionClick(option)}
+                onClick={() => this.onAnswerOptionClick(i)}
             />,
         );
     }
 
     renderActionButtons() {
-        const submitButton =
-            <Button onClick={this.onSubmitButtonClick}>
+        switch (this.state.phase) {
+            case Phase.quiz:
+                return this.renderQuizPhaseActionButtons();
+            case  Phase.ended:
+                return this.renderEndedPhaseActionButtons();
+            default:
+                return null;
+        }
+    }
+
+    renderQuizPhaseActionButtons() {
+        return (
+            <div className="mt-2">
+                {this.renderSubmitButton()}
+                {this.renderNextButton()}
+                {this.renderSubmitResponse()}
+                <br/>
+                {this.renderAskNaoButton()}
+                {this.renderHintResponse()}
+            </div>
+        );
+    }
+
+    renderSubmitButton() {
+        if (this.isCorrectAnswer()) {
+            return null;
+        } else {
+            return <Button onClick={this.onSubmitButtonClick}>
                 Submit
             </Button>;
+        }
+    }
 
-        const nextButton =
-            <Button
+    renderNextButton() {
+        if (this.isCorrectAnswer()) {
+            return <Button
                 onClick={this.onNextButtonClick}
                 className="ml-1">
                 Next Question
             </Button>;
+        } else {
+            return null;
+        }
+    }
 
-        const askNaoButton =
-            <Button
-                variant="info" className="mt-2"
-                onClick={this.onAskNaoButtonClick}>
-                Ask Nao
-            </Button>;
+    renderAskNaoButton() {
+        return <Button
+            variant="info" className="mt-2"
+            onClick={this.onAskNaoButtonClick}>
+            Ask Nao
+        </Button>;
+    }
 
+    renderEndedPhaseActionButtons() {
         return (
-            <div className="mt-2">
-                {submitButton}
-                {nextButton}
-                {this.renderSubmitResponse()}
-                <br/>
-                {askNaoButton}
-                {this.renderHintResponse()}
-            </div>
+            <Alert variant="success">
+                Good Job!
+            </Alert>
         );
     }
 
@@ -195,9 +271,11 @@ class Quiz extends Component {
             return null;
         }
 
+        const variant = this.isCorrectAnswer() ? "success" : "danger";
+
         return (
-            <Alert variant="success" className="m-0 mt-1">
-                {this.state.serverSubmitAnswer}
+            <Alert variant={variant} className="m-0 mt-1">
+                {this.state.serverSubmitAnswer.response}
             </Alert>
         );
     }
@@ -215,19 +293,42 @@ class Quiz extends Component {
     }
 
     renderNao() {
-        const nao_img = require('./images/nao_picture.png').default;
+        let nao_img;
+        switch (this.state.phase) {
+            case Phase.started:
+                nao_img = require('./media/images/nao_picture.png');
+                break;
+            case Phase.quiz:
+                if (this.state.serverSubmitAnswer == null) {
+                    nao_img = require('./media/images/nao_picture.png');
+                } else {
+                    if (this.isCorrectAnswer()) {
+                        nao_img = require('./media/gifs/correct_answer.gif');
+                    } else {
+                        nao_img = require('./media/gifs/incorrect_answer.gif');
+                    }
+                }
+                break;
+            case Phase.ended:
+                // Need to get ending gif
+                nao_img = require('./media/gifs/start_quiz.gif');
+                break;
+            default:
+                nao_img = require('./media/images/nao_picture.png');
+                break;
+        }
         return (
-            <Image src={nao_img} alt="nao_img" fluid className="h-100 max-vh-50"/>
+            <Image src={nao_img.default} alt="nao_img" fluid className="h-100 max-vh-50"/>
         );
     }
 
     renderFooter() {
         return (
-            <Row className="h-10">
+            <Row className="h-10 w-100 m-auto justify-content-center">
                 <Col xs={2} sm={2} className="h-100">
                     {this.renderTechnionImage()}
                 </Col>
-                <Col className="h-100">
+                <Col xs={8} sm={8} className="h-100">
                     {this.renderMindfulLabImage()}
                 </Col>
             </Row>
@@ -235,20 +336,33 @@ class Quiz extends Component {
     }
 
     renderTechnionImage() {
-        const technion_img = require('./images/technion.png').default;
+        const technion_img = require('./media/images/technion.png').default;
         return (
             <Image src={technion_img} alt="technion_img" fluid className="h-100"/>
         );
     }
 
     renderMindfulLabImage() {
-        const mindful_lab_img = require('./images/mindful_lab.png').default;
+        const mindful_lab_img = require('./media/images/mindful_lab.png').default;
         return (
-            <Image src={mindful_lab_img} alt="mindful_lab_img" fluid className="h-100"/>
+            <Image src={mindful_lab_img} alt="mindful_lab_img" className="h-100 w-100"/>
         );
     }
 
+    isCorrectAnswer() {
+        return this.state.serverSubmitAnswer &&
+            this.state.serverSubmitAnswer.answer === "correct";
+    }
+
     onAnswerOptionClick = answer => {
+        if (this.isCorrectAnswer()) {
+            for (const [ref, object] of Object.entries(this.refs)) {
+                if (ref.startsWith('radioAnswerOption')) {
+                    object.checked = ref === 'radioAnswerOption' + this.state.userAnswer;
+                }
+            }
+            return;
+        }
         this.setState({
             userAnswer: answer,
         });
@@ -274,9 +388,7 @@ class Quiz extends Component {
     };
 
     onStartButtonClick = () => {
-        this.setState({
-            started: true,
-        });
+        this.getQuestion(true);
     };
 }
 

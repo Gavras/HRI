@@ -2,12 +2,45 @@
     height: 90%;
 }
 
+.h-80 {
+    height: 80%;
+}
+
+.h-70 {
+    height: 70%;
+}
+
+.h-60 {
+    height: 60%;
+}
+
+.h-50 {
+
+    height: 50%;
+}
+
+.h-40 {
+    height: 40%;
+}
+
+.h-30 {
+    height: 30%;
+}
+
+.h-20 {
+    height: 20%;
+}
+
 .h-10 {
     height: 10%;
 }
 
 .h-fc {
     height: fit-content;
+}
+
+.w-fc {
+    width: fit-content;
 }
 
 .max-vh-50 {
