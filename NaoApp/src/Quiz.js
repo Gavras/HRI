@@ -29,10 +29,10 @@ class Quiz extends Component {
             hint: null,
             phase: Phase.started,
         };
-        this.getQuestion();
+        this.getQuestion(true);
     }
 
-    getQuestion() {
+    getQuestion(first = false) {
         const xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
@@ -49,7 +49,9 @@ class Quiz extends Component {
                 });
             }
         }.bind(this);
-        xmlHttp.open('GET', this.BACKEND_URL + 'get_question', true);
+        const url_suffix = first ? '?idx=0' : '';
+        const url = this.BACKEND_URL + 'get_question' + url_suffix;
+        xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
 
@@ -170,7 +172,7 @@ class Quiz extends Component {
                 ref={'radioAnswerOption' + i}
                 label={option}
                 name="radioAnswerOption"
-                onClick={() => this.onAnswerOptionClick(option)}
+                onClick={() => this.onAnswerOptionClick(i)}
             />,
         );
     }

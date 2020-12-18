@@ -25,13 +25,24 @@ class QuizManager:
             quiz_file_path = os.path.abspath(os.path.join(os.path.dirname(config_file_path), config_quiz_file_path))
         self.questions, self.possible_answers, self.correct_answers, self.hints, \
             self.positive_responses, self.negative_responses = self.parse_quiz(quiz_file_path)
-        self.current_question_idx = 0
+        self.current_question_idx = len(self.questions) - 1
+        self.question_number = 1
 
     # return current question
-    def get_question(self):
-        self.current_question_idx = (self.current_question_idx + 1) % len(self.questions)
-        question = {'question': self.questions[self.current_question_idx],
-                    'possible_answers': self.possible_answers[self.current_question_idx]}
+    def get_question(self, idx):
+        if idx is not None:
+            self.current_question_idx = int(idx)
+            self.question_number = int(idx)
+        else:
+            self.current_question_idx = (self.current_question_idx + 1) % len(self.questions)
+        if self.question_number == len(self.questions):
+            question = {'question': 'No More Questions!',
+                        'possible_answers': []}
+        else:
+            question = {'question': self.questions[self.current_question_idx],
+                        'possible_answers': self.possible_answers[self.current_question_idx]}
+            self.question_number += 1
+
         return question
 
     # check if submitted answer is in-fact the correct answer
