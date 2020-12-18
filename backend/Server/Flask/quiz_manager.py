@@ -54,9 +54,11 @@ class QuizManager:
     def submit_answer(self, answer):
         # extract correct response and move to next question if the answer is correct
         if self.check_answer(answer):
-            response = self.positive_responses[self.current_question_idx]
+            response = {'answer':'correct',
+                        'response': self.positive_responses[self.current_question_idx]}
         else:
-            response = self.negative_responses[self.current_question_idx]
+            response = {'answer':'incorrect',
+                        'response': self.negative_responses[self.current_question_idx]}
 
         return response
 

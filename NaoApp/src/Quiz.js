@@ -60,7 +60,7 @@ class Quiz extends Component {
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                 this.setState({
-                    serverSubmitAnswer: xmlHttp.responseText,
+                    serverSubmitAnswer: JSON.parse(xmlHttp.responseText),
                 });
             }
         }.bind(this);
@@ -214,9 +214,11 @@ class Quiz extends Component {
             return null;
         }
 
+        const variant = this.state.serverSubmitAnswer.answer === "correct" ? "success" : "danger";
+
         return (
-            <Alert variant="success" className="m-0 mt-1">
-                {this.state.serverSubmitAnswer}
+            <Alert variant={variant} className="m-0 mt-1">
+                {this.state.serverSubmitAnswer.response}
             </Alert>
         );
     }
