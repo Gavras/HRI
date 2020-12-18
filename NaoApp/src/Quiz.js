@@ -10,6 +10,12 @@ import Card from "react-bootstrap/Card";
 import "./index.css";
 import Button from "react-bootstrap/Button";
 
+const Phase = Object.freeze({
+    "started": 1,
+    "quiz": 2,
+    "ended": 3,
+});
+
 class Quiz extends Component {
 
     BACKEND_URL = 'http://localhost:8002/';
@@ -21,7 +27,7 @@ class Quiz extends Component {
             userAnswer: null,
             serverSubmitAnswer: null,
             hint: null,
-            started: false,
+            phase: Phase.started,
         };
         this.getQuestion();
     }
@@ -88,10 +94,21 @@ class Quiz extends Component {
     }
 
     renderMainContent() {
-        const row = this.state.started ? this.renderQuizContent() : this.renderLandingPage();
+        let column = null;
+        switch (this.state.phase) {
+            case Phase.started:
+                column = this.renderLandingPage();
+                break;
+            case Phase.quiz:
+                column = this.renderQuizContent();
+                break;
+            case Phase.ended:
+                break;
+        }
+
         return (
             <Row className="h-90 align-items-center justify-content-center">
-                {row}
+                {column}
             </Row>
         );
     }
@@ -275,7 +292,7 @@ class Quiz extends Component {
 
     onStartButtonClick = () => {
         this.setState({
-            started: true,
+            phase: Phase.quiz,
         });
     };
 }
