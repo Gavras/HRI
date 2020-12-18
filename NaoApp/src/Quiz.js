@@ -299,7 +299,15 @@ class Quiz extends Component {
                 nao_img = require('./media/images/nao_picture.png');
                 break;
             case Phase.quiz:
-                nao_img = require('./media/images/nao_picture.png');
+                if (this.state.serverSubmitAnswer == null) {
+                    nao_img = require('./media/images/nao_picture.png');
+                } else {
+                    if (this.isCorrectAnswer()) {
+                        nao_img = require('./media/gifs/correct_answer.gif');
+                    } else {
+                        nao_img = require('./media/gifs/incorrect_answer.gif');
+                    }
+                }
                 break;
             case Phase.ended:
                 // Need to get ending gif
