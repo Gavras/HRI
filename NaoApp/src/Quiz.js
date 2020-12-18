@@ -41,11 +41,17 @@ class Quiz extends Component {
                         object.checked = false;
                     }
                 }
+                const question = JSON.parse(xmlHttp.responseText);
+                let phase = Phase.quiz;
+                if (question.question === "No More Questions!") {
+                    phase = Phase.ended;
+                }
                 this.setState({
-                    question: JSON.parse(xmlHttp.responseText),
+                    question: question,
                     userAnswer: null,
                     serverSubmitAnswer: null,
                     hint: null,
+                    phase: phase,
                 });
             }
         }.bind(this);
@@ -105,6 +111,7 @@ class Quiz extends Component {
                 column = this.renderQuizContent();
                 break;
             case Phase.ended:
+                column = this.renderQuizContent();
                 break;
         }
 
@@ -178,36 +185,64 @@ class Quiz extends Component {
     }
 
     renderActionButtons() {
-        const submitButton = this.isCorrectAnswer() ?
-            null :
-            (<Button onClick={this.onSubmitButtonClick}>
-                Submit
-            </Button>);
+        switch (this.state.phase) {
+            case Phase.quiz:
+                return this.renderQuizPhaseActionButtons();
+            case  Phase.ended:
+                return this.renderEndedPhaseActionButtons();
+            default:
+                return null;
+        }
+    }
 
-        const nextButton = this.isCorrectAnswer() ?
-            (<Button
+    renderQuizPhaseActionButtons() {
+        return (
+            <div className="mt-2">
+                {this.renderSubmitButton()}
+                {this.renderNextButton()}
+                {this.renderSubmitResponse()}
+                <br/>
+                {this.renderAskNaoButton()}
+                {this.renderHintResponse()}
+            </div>
+        );
+    }
+
+    renderSubmitButton() {
+        if (this.isCorrectAnswer()) {
+            return null;
+        } else {
+            return <Button onClick={this.onSubmitButtonClick}>
+                Submit
+            </Button>;
+        }
+    }
+
+    renderNextButton() {
+        if (this.isCorrectAnswer()) {
+            return <Button
                 onClick={this.onNextButtonClick}
                 className="ml-1">
                 Next Question
-            </Button>) :
-            null;
-
-        const askNaoButton =
-            <Button
-                variant="info" className="mt-2"
-                onClick={this.onAskNaoButtonClick}>
-                Ask Nao
             </Button>;
+        } else {
+            return null;
+        }
+    }
 
+    renderAskNaoButton() {
+        return <Button
+            variant="info" className="mt-2"
+            onClick={this.onAskNaoButtonClick}>
+            Ask Nao
+        </Button>;
+    }
+
+    renderEndedPhaseActionButtons() {
         return (
-            <div className="mt-2">
-                {submitButton}
-                {nextButton}
-                {this.renderSubmitResponse()}
-                <br/>
-                {askNaoButton}
-                {this.renderHintResponse()}
-            </div>
+            <Alert variant="success">
+                Good Job!
+            </Alert>
         );
     }
 
