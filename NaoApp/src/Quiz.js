@@ -293,9 +293,24 @@ class Quiz extends Component {
     }
 
     renderNao() {
-        const nao_img = require('./media/images/nao_picture.png').default;
+        let nao_img;
+        switch (this.state.phase) {
+            case Phase.started:
+                nao_img = require('./media/images/nao_picture.png');
+                break;
+            case Phase.quiz:
+                nao_img = require('./media/images/nao_picture.png');
+                break;
+            case Phase.ended:
+                // Need to get ending gif
+                nao_img = require('./media/gifs/start_quiz.gif');
+                break;
+            default:
+                nao_img = require('./media/images/nao_picture.png');
+                break;
+        }
         return (
-            <Image src={nao_img} alt="nao_img" fluid className="h-100 max-vh-50"/>
+            <Image src={nao_img.default} alt="nao_img" fluid className="h-100 max-vh-50"/>
         );
     }
 
