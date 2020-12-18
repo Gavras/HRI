@@ -29,7 +29,6 @@ class Quiz extends Component {
             hint: null,
             phase: Phase.started,
         };
-        this.getQuestion(true);
     }
 
     getQuestion(first = false) {
@@ -90,9 +89,9 @@ class Quiz extends Component {
 
     render() {
         return (
-            <Card bg="light" className="vh-100">
-                <Card.Body bg="light" className="h-100">
-                    <Container className="h-100">
+            <Card bg="light" className="vh-100 vw-100 justify-content-center">
+                <Card.Body bg="light" className="h-100 w-100 justify-content-center">
+                    <Container className="h-100 w-100 justify-content-center">
                         {this.renderMainContent()}
                         {this.renderFooter()}
                     </Container>
@@ -116,7 +115,7 @@ class Quiz extends Component {
         }
 
         return (
-            <Row className="h-90 align-items-center justify-content-center">
+            <Row className="h-90 w-100 m-auto align-items-center justify-content-center">
                 {column}
             </Row>
         );
@@ -124,17 +123,38 @@ class Quiz extends Component {
 
     renderLandingPage() {
         return (
-            <Col xs={6} sm={6} className="h-fc w-fc">
-                {this.renderStartButton()}
+            <Col className="h-100 w-100 justify-content-center">
+                <Container className="h-100 w-100 justify-content-center">
+                    <Row className="h-80 w-100 m-auto justify-content-center">
+                        <Col className="h-100 w-100 d-flex justify-content-center">
+                            {this.renderStartQuizGif()}
+                        </Col>
+                    </Row>
+                    <Row className="h-20 mt-1 justify-content-center align-items-center">
+                        <Col className="d-flex justify-content-center">
+                            {this.renderStartButton()}
+                        </Col>
+                    </Row>
+                </Container>
             </Col>
         );
     }
 
-    renderStartButton() {
-        const start_button_img = require('./images/start_picture.png').default;
+    renderStartQuizGif() {
+        const start_gif = require('./media/gifs/start_quiz.gif').default;
         return (
-            <Image src={start_button_img} alt="start_button_img" fluid className="h-100 max-vh-50"
+            <Image src={start_gif} alt="start_gif" fluid className="h-100"
                    onClick={() => this.onStartButtonClick()}/>
+        );
+    }
+
+    renderStartButton() {
+        return (
+            <Button className=""
+                    variant="success"
+                    onClick={() => this.onStartButtonClick()}>
+                Start Quiz
+            </Button>
         );
     }
 
@@ -273,7 +293,7 @@ class Quiz extends Component {
     }
 
     renderNao() {
-        const nao_img = require('./images/nao_picture.png').default;
+        const nao_img = require('./media/images/nao_picture.png').default;
         return (
             <Image src={nao_img} alt="nao_img" fluid className="h-100 max-vh-50"/>
         );
@@ -281,11 +301,11 @@ class Quiz extends Component {
 
     renderFooter() {
         return (
-            <Row className="h-10">
+            <Row className="h-10 w-100 m-auto justify-content-center">
                 <Col xs={2} sm={2} className="h-100">
                     {this.renderTechnionImage()}
                 </Col>
-                <Col className="h-100">
+                <Col xs={8} sm={8} className="h-100">
                     {this.renderMindfulLabImage()}
                 </Col>
             </Row>
@@ -293,16 +313,16 @@ class Quiz extends Component {
     }
 
     renderTechnionImage() {
-        const technion_img = require('./images/technion.png').default;
+        const technion_img = require('./media/images/technion.png').default;
         return (
             <Image src={technion_img} alt="technion_img" fluid className="h-100"/>
         );
     }
 
     renderMindfulLabImage() {
-        const mindful_lab_img = require('./images/mindful_lab.png').default;
+        const mindful_lab_img = require('./media/images/mindful_lab.png').default;
         return (
-            <Image src={mindful_lab_img} alt="mindful_lab_img" fluid className="h-100"/>
+            <Image src={mindful_lab_img} alt="mindful_lab_img" className="h-100 w-100"/>
         );
     }
 
@@ -345,9 +365,7 @@ class Quiz extends Component {
     };
 
     onStartButtonClick = () => {
-        this.setState({
-            phase: Phase.quiz,
-        });
+        this.getQuestion(true);
     };
 }
 
