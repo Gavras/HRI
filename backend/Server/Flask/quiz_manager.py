@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 from configparser import ConfigParser
@@ -6,7 +7,8 @@ from configparser import ConfigParser
 class QuizManager:
     def __init__(self):
         # read and extract config from file to a dictionary of parameters
-        config_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini')
+        cur_dir = os.path.dirname(os.path.abspath(__file__))
+        config_file_path = os.path.join(cur_dir, 'config.ini')
         config = ConfigParser()
         config.read(config_file_path)
         app_config = config['config']
@@ -25,8 +27,20 @@ class QuizManager:
             quiz_file_path = os.path.abspath(os.path.join(os.path.dirname(config_file_path), config_quiz_file_path))
         self.questions, self.possible_answers, self.correct_answers, self.hints, \
             self.positive_responses, self.negative_responses = self.parse_quiz(quiz_file_path)
+
+        self.nao_gifs_dir = os.path.abspath(os.path.join(cur_dir, '..', 'gifs'))
+
         self.current_question_idx = len(self.questions) - 1
         self.question_number = 1
+
+    def get_gif_string(self, gif_name):
+        gif = os.path.join(self.nao_gifs_dir, f'{gif_name}.gif')
+        with open(gif, 'rb') as gif_file:
+            r = base64.b64encode(gif_file.read()).decode('ascii')
+        return r
+
+    def get_gif(self, gif):
+        return self.get_gif_string(gif)
 
     # return current question
     def get_question(self, idx):
@@ -54,11 +68,13 @@ class QuizManager:
     def submit_answer(self, answer):
         # extract correct response and move to next question if the answer is correct
         if self.check_answer(answer):
-            response = {'answer':'correct',
-                        'response': self.positive_responses[self.current_question_idx]}
+            response = {'answer': 'correct',
+                        'response': self.positive_responses[self.current_question_idx],
+                        'gif': self.get_gif_string('correct_answer')}
         else:
-            response = {'answer':'incorrect',
-                        'response': self.negative_responses[self.current_question_idx]}
+            response = {'answer': 'incorrect',
+                        'response': self.negative_responses[self.current_question_idx],
+                        'gif': self.get_gif_string('incorrect_answer')}
 
         return response
 

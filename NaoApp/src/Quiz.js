@@ -28,7 +28,23 @@ class Quiz extends Component {
             serverSubmitAnswer: null,
             hint: null,
             phase: Phase.started,
+            serverGif: null,
         };
+        this.getServerGif('start_quiz');
+    }
+
+    getServerGif(gif) {
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                this.setState({
+                    serverGif: xmlHttp.responseText,
+                });
+            }
+        }.bind(this);
+        const url = this.BACKEND_URL + 'get_gif?gif=' + gif;
+        xmlHttp.open('GET', url, true);
+        xmlHttp.send(null);
     }
 
     getQuestion(first = false) {
@@ -44,6 +60,7 @@ class Quiz extends Component {
                 let phase = Phase.quiz;
                 if (question.question === "No More Questions!") {
                     phase = Phase.ended;
+                    this.getServerGif('end_quiz');
                 }
                 this.setState({
                     question: question,
@@ -141,7 +158,10 @@ class Quiz extends Component {
     }
 
     renderStartQuizGif() {
-        const start_gif = require('./media/gifs/start_quiz.gif').default;
+        if (!this.state.serverGif) {
+            return null;
+        }
+        const src = this.getGifSrc(this.state.serverGif);
         return (
             <Image src={start_gif} alt="start_gif" fluid className="h-100"/>
         );
@@ -292,32 +312,16 @@ class Quiz extends Component {
     }
 
     renderNao() {
-        let nao_img;
-        switch (this.state.phase) {
-            case Phase.started:
-                nao_img = require('./media/images/nao_picture.png');
-                break;
-            case Phase.quiz:
-                if (this.state.serverSubmitAnswer == null) {
-                    nao_img = require('./media/images/nao_picture.png');
-                } else {
-                    if (this.isCorrectAnswer()) {
-                        nao_img = require('./media/gifs/correct_answer.gif');
-                    } else {
-                        nao_img = require('./media/gifs/incorrect_answer.gif');
-                    }
-                }
-                break;
-            case Phase.ended:
-                // Need to get ending gif
-                nao_img = require('./media/gifs/end_quiz.gif');
-                break;
-            default:
-                nao_img = require('./media/images/nao_picture.png');
-                break;
+        let src;
+        if (this.state.serverSubmitAnswer) {
+            src = this.getGifSrc(this.state.serverSubmitAnswer.gif);
+        } else if (this.state.serverGif) {
+            src = this.getGifSrc(this.state.serverGif);
+        } else {
+            src = require('./media/images/nao_picture.png').default;
         }
         return (
-            <Image src={nao_img.default} alt="nao_img" fluid className="h-100 max-vh-50"/>
+            <Image src={src} alt="nao_img" fluid className="h-100 max-vh-50"/>
         );
     }
 
@@ -351,6 +355,10 @@ class Quiz extends Component {
     isCorrectAnswer() {
         return this.state.serverSubmitAnswer &&
             this.state.serverSubmitAnswer.answer === "correct";
+    }
+
+    getGifSrc(src) {
+        return 'data:image/jpeg;base64,' + src;
     }
 
     onAnswerOptionClick = answer => {
