@@ -143,8 +143,7 @@ class Quiz extends Component {
     renderStartQuizGif() {
         const start_gif = require('./media/gifs/start_quiz.gif').default;
         return (
-            <Image src={start_gif} alt="start_gif" fluid className="h-100"
-                   onClick={() => this.onStartButtonClick()}/>
+            <Image src={start_gif} alt="start_gif" fluid className="h-100"/>
         );
     }
 
