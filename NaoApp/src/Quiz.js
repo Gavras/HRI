@@ -143,8 +143,7 @@ class Quiz extends Component {
     renderStartQuizGif() {
         const start_gif = require('./media/gifs/start_quiz.gif').default;
         return (
-            <Image src={start_gif} alt="start_gif" fluid className="h-100"
-                   onClick={() => this.onStartButtonClick()}/>
+            <Image src={start_gif} alt="start_gif" fluid className="h-100"/>
         );
     }
 
@@ -311,7 +310,7 @@ class Quiz extends Component {
                 break;
             case Phase.ended:
                 // Need to get ending gif
-                nao_img = require('./media/gifs/onEnd.gif');
+                nao_img = require('./media/gifs/end_quiz.gif');
                 break;
             default:
                 nao_img = require('./media/images/nao_picture.png');
