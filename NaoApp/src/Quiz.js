@@ -311,7 +311,7 @@ class Quiz extends Component {
                 break;
             case Phase.ended:
                 // Need to get ending gif
-                nao_img = require('./media/gifs/onEnd.gif');
+                nao_img = require('./media/gifs/end_quiz.gif');
                 break;
             default:
                 nao_img = require('./media/images/nao_picture.png');
