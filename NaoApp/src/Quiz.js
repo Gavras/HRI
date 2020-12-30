@@ -163,7 +163,7 @@ class Quiz extends Component {
         }
         const src = this.getGifSrc(this.state.serverGif);
         return (
-            <Image src={start_gif} alt="start_gif" fluid className="h-100"/>
+            <Image src={src} alt="start_gif" fluid className="h-100"/>
         );
     }
 
@@ -376,6 +376,7 @@ class Quiz extends Component {
     };
 
     onSubmitButtonClick = () => {
+        //add backend request: log action: "which action"
         if (this.state.userAnswer == null) {
             this.setState({
                 serverSubmitAnswer: "Please choose an answer",
