@@ -1,5 +1,6 @@
 import subprocess
 import os
+import sys
 import time
 import traceback
 
@@ -8,7 +9,7 @@ def main():
     current_path = os.path.dirname(os.path.abspath(__file__))
     flask_app_path = os.path.join(current_path, 'Flask', 'app_listener.py')
     # open a subprocess to run the flask app listener
-    flask_app = subprocess.Popen("python {} ".format(flask_app_path))
+    flask_app = subprocess.Popen(f'{sys.executable} {flask_app_path}', shell=True)
     try:
         # add more logic/workers here
 
