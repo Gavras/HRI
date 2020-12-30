@@ -69,13 +69,15 @@ class Quiz extends Component {
                     phase = Phase.ended;
                     this.getServerGif('end_quiz');
                 }
-                this.setState({
-                    question: question,
-                    userAnswer: null,
-                    serverSubmitAnswer: null,
-                    hint: null,
-                    phase: phase,
-                    serverGif: null,
+                this.setState(prevState => {
+                    return {
+                        question: question,
+                        userAnswer: null,
+                        serverSubmitAnswer: null,
+                        hint: null,
+                        phase: phase,
+                        serverGif: first ? null : prevState.serverGif,
+                    };
                 });
             }
         }.bind(this);
@@ -114,9 +116,9 @@ class Quiz extends Component {
 
     render() {
         return (
-            <Card bg="light" className="vh-100 vw-100 justify-content-center">
-                <Card.Body bg="light" className="h-100 w-100 justify-content-center">
-                    <Container className="h-100 w-100 justify-content-center">
+            <Card bg="light" className="vw-100 justify-content-center">
+                <Card.Body bg="light" className="w-100 justify-content-center">
+                    <Container className="w-100 justify-content-center">
                         {this.renderMainContent()}
                         {this.renderFooter()}
                     </Container>
@@ -135,12 +137,12 @@ class Quiz extends Component {
                 column = this.renderQuizContent();
                 break;
             case Phase.ended:
-                column = this.renderQuizContent();
+                column = this.renderEndingPage();
                 break;
         }
 
         return (
-            <Row className="h-90 w-100 m-auto align-items-center justify-content-center">
+            <Row className="w-100 m-auto align-items-center justify-content-center">
                 {column}
             </Row>
         );
@@ -148,14 +150,14 @@ class Quiz extends Component {
 
     renderLandingPage() {
         return (
-            <Col className="h-100 w-100 justify-content-center">
-                <Container className="h-100 w-100 justify-content-center">
-                    <Row className="h-80 w-100 m-auto justify-content-center">
-                        <Col className="h-100 w-100 d-flex justify-content-center">
+            <Col className="w-100 justify-content-center">
+                <Container className="w-100 justify-content-center">
+                    <Row className="w-100 m-auto justify-content-center">
+                        <Col className="w-100 d-flex justify-content-center">
                             {this.renderStartQuizGif()}
                         </Col>
                     </Row>
-                    <Row className="h-20 mt-1 justify-content-center align-items-center">
+                    <Row className="mt-1 justify-content-center align-items-center">
                         <Col className="d-flex justify-content-center">
                             {this.renderStartButton()}
                         </Col>
@@ -188,33 +190,25 @@ class Quiz extends Component {
     renderQuizContent() {
         return (
             <>
-                <Col className="h-fc">
-                    {this.renderQuestion()}
+                <Col>
+                    {this.renderQuestionHeader()}
                 </Col>
-                <Col className="h-fc">
+                <Col>
+                    {this.renderAnswerOptions()}
+                    {this.renderActionButtons()}
+                </Col>
+                <Col>
                     {this.renderNao()}
                 </Col>
             </>
         );
     }
 
-    renderQuestion() {
-        if (this.state.question == null) {
-            return null;
-        }
-
+    renderQuestionHeader() {
         return (
-            <Card bg="light" className="h-100 w-questions-card">
-                <Card.Header>
-                    {this.state.question.question}
-                </Card.Header>
-                <Card.Body>
-                    <Form>
-                        {this.renderAnswerOptions()}
-                        {this.renderActionButtons()}
-                    </Form>
-                </Card.Body>
-            </Card>
+            <>
+                {this.getTextAndImageComponentFromList(this.state.question.question)}
+            </>
         );
     }
 
@@ -224,7 +218,7 @@ class Quiz extends Component {
                 type="radio"
                 id={option}
                 ref={'radioAnswerOption' + i}
-                label={option}
+                label={this.getTextAndImageComponentFromList(option)}
                 name="radioAnswerOption"
                 onClick={() => this.onAnswerOptionClick(i)}
             />,
@@ -333,30 +327,82 @@ class Quiz extends Component {
         );
     }
 
+    renderEndingPage() {
+        return (
+            <Col className="w-100 justify-content-center">
+                <Container className="w-100 justify-content-center">
+                    <Row className="w-100 m-auto justify-content-center">
+                        <Col className="w-100 d-flex justify-content-center">
+                            {this.renderEndQuizGif()}
+                        </Col>
+                    </Row>
+                    <Row className="mt-1 justify-content-center align-items-center">
+                        <Col className="d-flex justify-content-center">
+                            {this.renderEndButton()}
+                        </Col>
+                    </Row>
+                </Container>
+            </Col>
+        );
+    }
+
+    renderEndQuizGif() {
+        if (!this.state.serverGif) {
+            return null;
+        }
+        const src = this.getGifSrc(this.state.serverGif);
+        return (
+            <Image src={src} alt="end_gif" fluid className="h-100"/>
+        );
+    }
+
+    renderEndButton() {
+        return (
+            <Alert variant="success" className="m-0 mt-1">
+                Good Job!
+            </Alert>
+        );
+    }
+
     renderFooter() {
         return (
-            <Row className="h-10 w-100 m-auto justify-content-center">
-                <Col xs={2} sm={2} className="h-100">
-                    {this.renderTechnionImage()}
-                </Col>
-                <Col xs={8} sm={8} className="h-100">
-                    {this.renderMindfulLabImage()}
-                </Col>
-            </Row>
+            <>
+                <br/>
+                <br/>
+                <br/>
+                <Row className="w-100 m-auto justify-content-center">
+                    <Col xs={2} sm={2}>
+                        {this.renderTechnionImage()}
+                    </Col>
+                    <Col xs={8} sm={8}>
+                        {this.renderMindfulLabImage()}
+                    </Col>
+                </Row>
+            </>
         );
     }
 
     renderTechnionImage() {
         const technion_img = require('./media/images/technion.png').default;
         return (
-            <Image src={technion_img} alt="technion_img" fluid className="h-100"/>
+            <Image src={technion_img} alt="technion_img" fluid/>
         );
     }
 
     renderMindfulLabImage() {
         const mindful_lab_img = require('./media/images/mindful_lab.png').default;
         return (
-            <Image src={mindful_lab_img} alt="mindful_lab_img" className="h-100 w-100"/>
+            <Image src={mindful_lab_img} alt="mindful_lab_img" className="w-100"/>
+        );
+    }
+
+    getTextAndImageComponentFromList(list) {
+        return list.map(o =>
+            o.type === 'text' ?
+                <p className="q-p">{o.value}</p> :
+                <p className="q-p">
+                    <Image className="q-p" src={o.value} fluid/>
+                </p>,
         );
     }
 
