@@ -33,6 +33,15 @@ class QuizManager:
         self.current_question_idx = len(self.questions) - 1
         self.question_number = 1
 
+        self.logger = self.get_logger()
+
+    def get_logger(self):
+
+        return logger
+
+    def log_action(self, log_action):
+        self.logger.info(log_action)
+
     def get_gif_string(self, gif_name):
         gif = os.path.join(self.nao_gifs_dir, f'{gif_name}.gif')
         with open(gif, 'rb') as gif_file:

@@ -33,6 +33,13 @@ class Quiz extends Component {
         this.getServerGif('start_quiz');
     }
 
+    backendLog(message) {
+        const xmlHttp = new XMLHttpRequest();
+        const url = this.BACKEND_URL + 'submit_answer?answer=' + this.state.userAnswer; //TODO: change to actual message
+        xmlHttp.open('GET', url, true);
+        xmlHttp.send(null);
+    }
+
     getServerGif(gif) {
         const xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
@@ -398,6 +405,7 @@ class Quiz extends Component {
     onStartButtonClick = () => {
         this.getQuestion(true);
     };
+
 }
 
 export default Quiz;
