@@ -2,6 +2,7 @@ import base64
 import json
 import os
 from configparser import ConfigParser
+import logging
 
 
 class QuizManager:
@@ -32,12 +33,17 @@ class QuizManager:
 
         self.current_question_idx = len(self.questions) - 1
         self.question_number = 1
-
         self.logger = self.get_logger()
+        self.log_action("yay, started quiz_manager") #remove this
 
-    def get_logger(self):
-
-        return logger
+    @staticmethod
+    def get_logger():
+        logging.basicConfig(filename='user_actions.log',
+                            level=logging.INFO,
+                            datefmt='%Y-%m-%d %H:%M:%S',
+                            format='%(asctime)s %(levelname)-8s %(message)s')
+        new_logger = logging.getLogger()
+        return new_logger
 
     def log_action(self, log_action):
         self.logger.info(log_action)

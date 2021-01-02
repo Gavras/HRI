@@ -35,7 +35,7 @@ class Quiz extends Component {
 
     backendLog(message) {
         const xmlHttp = new XMLHttpRequest();
-        const url = this.BACKEND_URL + 'submit_answer?answer=' + this.state.userAnswer; //TODO: change to actual message
+        const url = this.BACKEND_URL + 'submit_answer?answer=' + message;
         xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
