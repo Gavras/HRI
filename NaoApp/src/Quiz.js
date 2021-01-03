@@ -35,7 +35,7 @@ class Quiz extends Component {
 
     backendLog(message) {
         const xmlHttp = new XMLHttpRequest();
-        const url = this.BACKEND_URL + 'submit_answer?answer=' + message;
+        const url = this.BACKEND_URL + 'log_action?message=' + message;
         xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
@@ -377,13 +377,14 @@ class Quiz extends Component {
             }
             return;
         }
+        this.backendLog("User chose an answer");
         this.setState({
             userAnswer: answer,
         });
     };
 
     onSubmitButtonClick = () => {
-        //add backend request: log action: "which action"
+        this.backendLog("User clicked the Submit button");
         if (this.state.userAnswer == null) {
             this.setState({
                 serverSubmitAnswer: "Please choose an answer",
@@ -395,14 +396,17 @@ class Quiz extends Component {
     };
 
     onNextButtonClick = () => {
+        this.backendLog("User clicked the Next Question button");
         this.getQuestion();
     };
 
     onAskNaoButtonClick = () => {
+        this.backendLog("User clicked the Ask Nao button");
         this.getHint();
     };
 
     onStartButtonClick = () => {
+        this.backendLog("User clicked the Start button");
         this.getQuestion(true);
     };
 

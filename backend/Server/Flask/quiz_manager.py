@@ -45,8 +45,8 @@ class QuizManager:
         new_logger = logging.getLogger()
         return new_logger
 
-    def log_action(self, log_action):
-        self.logger.info(log_action)
+    def log_action(self, message):
+        self.logger.info(message)
 
     def get_gif_string(self, gif_name):
         gif = os.path.join(self.nao_gifs_dir, f'{gif_name}.gif')
