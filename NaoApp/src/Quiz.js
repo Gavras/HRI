@@ -377,7 +377,7 @@ class Quiz extends Component {
             }
             return;
         }
-        this.backendLog("User chose an answer");
+        this.backendLog("User chose answer "+answer);
         this.setState({
             userAnswer: answer,
         });
