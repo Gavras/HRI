@@ -33,6 +33,13 @@ class Quiz extends Component {
         this.getServerGif('start_quiz');
     }
 
+    backendLog(message) {
+        const xmlHttp = new XMLHttpRequest();
+        const url = this.BACKEND_URL + 'log_action?message=' + message;
+        xmlHttp.open('GET', url, true);
+        xmlHttp.send(null);
+    }
+
     getServerGif(gif) {
         const xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
@@ -68,6 +75,7 @@ class Quiz extends Component {
                     serverSubmitAnswer: null,
                     hint: null,
                     phase: phase,
+                    serverGif: null,
                 });
             }
         }.bind(this);
@@ -251,7 +259,7 @@ class Quiz extends Component {
         if (this.isCorrectAnswer()) {
             return null;
         } else {
-            return <Button onClick={this.onSubmitButtonClick}>
+            return <Button onClick={() => this.onSubmitButtonClick()}>
                 Submit
             </Button>;
         }
@@ -313,7 +321,7 @@ class Quiz extends Component {
 
     renderNao() {
         let src;
-        if (this.state.serverSubmitAnswer) {
+        if (this.state.serverSubmitAnswer && this.state.serverSubmitAnswer.gif) {
             src = this.getGifSrc(this.state.serverSubmitAnswer.gif);
         } else if (this.state.serverGif) {
             src = this.getGifSrc(this.state.serverGif);
@@ -370,34 +378,42 @@ class Quiz extends Component {
             }
             return;
         }
+        this.backendLog("User chose answer " + (answer + 1));
         this.setState({
             userAnswer: answer,
         });
     };
 
-    onSubmitButtonClick = () => {
-        //add backend request: log action: "which action"
+    onSubmitButtonClick() {
+        this.backendLog("User clicked the Submit button");
         if (this.state.userAnswer == null) {
             this.setState({
-                serverSubmitAnswer: "Please choose an answer",
+                serverSubmitAnswer: {
+                    response: "Please choose an answer",
+                    gif: null,
+                },
             });
             return;
         }
 
         this.getServerSubmitAnswer();
-    };
+    }
 
     onNextButtonClick = () => {
+        this.backendLog("User clicked the Next Question button");
         this.getQuestion();
     };
 
     onAskNaoButtonClick = () => {
+        this.backendLog("User clicked the Ask Nao button");
         this.getHint();
     };
 
     onStartButtonClick = () => {
+        this.backendLog("User clicked the Start button");
         this.getQuestion(true);
     };
+
 }
 
 export default Quiz;

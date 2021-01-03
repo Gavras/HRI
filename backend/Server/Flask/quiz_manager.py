@@ -2,6 +2,7 @@ import base64
 import json
 import os
 from configparser import ConfigParser
+import logging
 
 
 class QuizManager:
@@ -32,6 +33,22 @@ class QuizManager:
 
         self.current_question_idx = len(self.questions) - 1
         self.question_number = 1
+        self.log_path = os.path.join(os.path.dirname(quiz_file_path), 'user_actions.log')
+        self.logger = self.get_logger()
+        with open(self.log_path, 'w'):
+            pass
+
+    def get_logger(self):
+        new_logger = logging.getLogger(__name__)
+        new_logger.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)-8s %(message)s', '%Y-%m-%d %H:%M:%S')
+        file_handler = logging.FileHandler(self.log_path)
+        file_handler.setFormatter(formatter)
+        new_logger.addHandler(file_handler)
+        return new_logger
+
+    def log_action(self, message):
+        self.logger.info(message)
 
     def get_gif_string(self, gif_name):
         gif = os.path.join(self.nao_gifs_dir, f'{gif_name}.gif')
