@@ -75,6 +75,7 @@ class Quiz extends Component {
                     serverSubmitAnswer: null,
                     hint: null,
                     phase: phase,
+                    serverGif: null,
                 });
             }
         }.bind(this);
@@ -258,7 +259,7 @@ class Quiz extends Component {
         if (this.isCorrectAnswer()) {
             return null;
         } else {
-            return <Button onClick={this.onSubmitButtonClick}>
+            return <Button onClick={() => this.onSubmitButtonClick()}>
                 Submit
             </Button>;
         }
@@ -320,7 +321,7 @@ class Quiz extends Component {
 
     renderNao() {
         let src;
-        if (this.state.serverSubmitAnswer) {
+        if (this.state.serverSubmitAnswer && this.state.serverSubmitAnswer.gif) {
             src = this.getGifSrc(this.state.serverSubmitAnswer.gif);
         } else if (this.state.serverGif) {
             src = this.getGifSrc(this.state.serverGif);
@@ -377,23 +378,26 @@ class Quiz extends Component {
             }
             return;
         }
-        this.backendLog("User chose answer "+answer);
+        this.backendLog("User chose answer " + (answer + 1));
         this.setState({
             userAnswer: answer,
         });
     };
 
-    onSubmitButtonClick = () => {
+    onSubmitButtonClick() {
         this.backendLog("User clicked the Submit button");
         if (this.state.userAnswer == null) {
             this.setState({
-                serverSubmitAnswer: "Please choose an answer",
+                serverSubmitAnswer: {
+                    response: "Please choose an answer",
+                    gif: null,
+                },
             });
             return;
         }
 
         this.getServerSubmitAnswer();
-    };
+    }
 
     onNextButtonClick = () => {
         this.backendLog("User clicked the Next Question button");
