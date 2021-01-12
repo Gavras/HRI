@@ -45,7 +45,7 @@ class Quiz extends Component {
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                 this.setState({
-                    serverGif: xmlHttp.responseText,
+                    serverGif: JSON.parse(xmlHttp.responseText),
                 });
             }
         }.bind(this);
@@ -106,7 +106,7 @@ class Quiz extends Component {
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                 this.setState({
-                    hint: xmlHttp.responseText,
+                    hint: JSON.parse(xmlHttp.responseText),
                 });
             }
         }.bind(this);

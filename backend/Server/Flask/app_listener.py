@@ -45,6 +45,7 @@ def log_action():
     return ''
 
 def create_response(msg):
+    msg = flask.jsonify(msg)
     resp = flask.make_response(msg)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
