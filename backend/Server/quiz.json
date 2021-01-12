@@ -95,6 +95,48 @@
     "positive_response": "Great Job!",
     "negative_response": "Oops, Try Again!"
   },
+  "question_3": {
+    "question": [
+      {
+        "type": "text",
+        "value": "Beavers like complex rule systems and have therefore established a new dress code. Some beavers don't use the correct combination of clothes. Use the graph to determine which beaver is dressed correctly. The graphic is called a tree because there is a single root node (the topmost) with branches connecting other nodes – like a real tree. At every node you have to decide which direction you want to go within the tree, you can’t go up again. Which beaver is not dressed like the dress code?"
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-code.png"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeA.png"
+        }
+      ],
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeB.png"
+        }
+      ],
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeC.png"
+        }
+      ],
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeD.png"
+        }
+      ]
+    ],
+    "correct_answer": "1",
+    "hint": "Someone should have a blue hat instead of a red one.",
+    "positive_response": "Great Job!",
+    "negative_response": "Try Again!"
+  },
   "question_4": {
     "question": [
       {
