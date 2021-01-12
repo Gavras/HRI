@@ -99,36 +99,40 @@
     "question": [
       {
         "type": "text",
-        "value": "Beavers like complex rule systems and have therefore established a new dress code. Some beavers don't use the correct combination of clothes. Use the graph to determine which beaver is dressed correctly. The graphic is called a tree because there is a single root node (the topmost) with branches connecting other nodes – like a real tree. At every node you have to decide which direction you want to go within the tree, you can’t go up again. Which beaver is not dressed like the dress code?"
+        "value": "The Beaver has developed a programming language for paper folding. This language can be used to explain how to fold any piece of paper with straight sides. One of the commands in this language is fold.\ne = fold(a, b) means:\nfold the piece of paper in a way that side a is lying completely on side b.\nIn that way you create a new side, the fold. This line is called e.\nExample:"
       },
       {
         "type": "image",
-        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-code.png"
+        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-folding.png"
+      },
+      {
+        "type": "text",
+        "value": "Please note, that the paper remains on the table during folding, and that the length of side b is twice the length of side a.\n\nHow does the paper rectangle (a, b, c, d) look like after the execution of these three commands?\n\ne = fold(c, a); f = fold(c, d); g = fold(a, f)"
       }
     ],
     "possible_answers": [
       [
         {
           "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeA.png"
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingA.png"
         }
       ],
       [
         {
           "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeB.png"
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingB.png"
         }
       ],
       [
         {
           "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeC.png"
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingC.png"
         }
       ],
       [
         {
           "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/dress-codeD.png"
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingD.png"
         }
       ]
     ],
