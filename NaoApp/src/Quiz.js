@@ -169,7 +169,7 @@ class Quiz extends Component {
 
     renderStartQuizGif() {
         if (!this.state.serverGif) {
-            return null;
+            return this.renderLoadingGif();
         }
         const src = this.getGifSrc(this.state.serverGif);
         return (
@@ -348,7 +348,7 @@ class Quiz extends Component {
 
     renderEndQuizGif() {
         if (!this.state.serverGif) {
-            return null;
+            return this.renderLoadingGif();
         }
         const src = this.getGifSrc(this.state.serverGif);
         return (
@@ -393,6 +393,13 @@ class Quiz extends Component {
         const mindful_lab_img = require('./media/images/mindful_lab.png').default;
         return (
             <Image src={mindful_lab_img} alt="mindful_lab_img" className="w-100"/>
+        );
+    }
+
+    renderLoadingGif() {
+        const src = require('./media/gifs/loading.gif').default;
+        return (
+            <img src={src} alt="loading_gif"/>
         );
     }
 
