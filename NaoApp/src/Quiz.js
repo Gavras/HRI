@@ -358,9 +358,16 @@ class Quiz extends Component {
 
     renderEndButton() {
         return (
-            <Alert variant="success" className="m-0 mt-1">
-                Good Job!
-            </Alert>
+            <>
+                <Alert variant="success" className="m-0 mt-1">
+                    Good Job!
+                </Alert>
+                <Button
+                    variant="success" className="ml-2"
+                    onClick={this.onStartButtonClick}>
+                    Restart Quiz
+                </Button>
+            </>
         );
     }
 
