@@ -152,11 +152,11 @@ class Quiz extends Component {
         return (
             <Col className="w-100 justify-content-center">
                 <Container className="w-100 justify-content-center">
-                    <Row className="w-100 m-auto justify-content-center">
-                        <Col className="w-100 d-flex justify-content-center">
-                            {this.renderStartQuizGif()}
-                        </Col>
-                    </Row>
+                    {/*<Row className="w-100 m-auto justify-content-center">*/}
+                        {/*<Col className="w-100 d-flex justify-content-center">*/}
+                        {/*    {this.renderStartQuizGif()}*/}
+                        {/*</Col>*/}
+                    {/*</Row>*/}
                     <Row className="mt-1 justify-content-center align-items-center">
                         <Col className="d-flex justify-content-center">
                             {this.renderStartButton()}
@@ -197,9 +197,9 @@ class Quiz extends Component {
                     {this.renderAnswerOptions()}
                     {this.renderActionButtons()}
                 </Col>
-                <Col>
-                    {this.renderNao()}
-                </Col>
+                {/*<Col>*/}
+                {/*    {this.renderNao()}*/}
+                {/*</Col>*/}
             </>
         );
     }
@@ -331,11 +331,11 @@ class Quiz extends Component {
         return (
             <Col className="w-100 justify-content-center">
                 <Container className="w-100 justify-content-center">
-                    <Row className="w-100 m-auto justify-content-center">
-                        <Col className="w-100 d-flex justify-content-center">
-                            {this.renderEndQuizGif()}
-                        </Col>
-                    </Row>
+                    {/*<Row className="w-100 m-auto justify-content-center">*/}
+                    {/*    <Col className="w-100 d-flex justify-content-center">*/}
+                    {/*        {this.renderEndQuizGif()}*/}
+                    {/*    </Col>*/}
+                    {/*</Row>*/}
                     <Row className="mt-1 justify-content-center align-items-center">
                         <Col className="d-flex justify-content-center">
                             {this.renderEndButton()}
