@@ -2,12 +2,26 @@ import base64
 import json
 import os
 from configparser import ConfigParser
+from Nao_Robot_wrapper import Nao_Robot_wrapper_36
 import logging
+from random import randint
 
 
 class QuizManager:
     def __init__(self):
         # read and extract config from file to a dictionary of parameters
+        self.mode = 'B'
+        # correct behavior directory path for Choreograph
+        self.correct_behaviors = ['correct1A', 'correct1B', 'correct1C',
+                                  'correct2A', 'correct2B', 'correct2C',
+                                  'correct3A', 'correct3B', 'correct3C',
+                                  'correct4A', 'correct4B', 'correct4C']
+        # Incorrect behavior directory path for Choreograph
+        self.incorrect_behaviors = ['incorrect1A', 'incorrect1B',
+                                    'incorrect2A', 'incorrect2B',
+                                    'incorrect3A', 'incorrect3B']
+
+        self.hint_behaviors = []
         cur_dir = os.path.dirname(os.path.abspath(__file__))
         config_file_path = os.path.join(cur_dir, 'config.ini')
         config = ConfigParser()
@@ -15,11 +29,12 @@ class QuizManager:
         app_config = config['config']
 
         # Network configs
-        self.nao_ip = app_config['nao_ip']
-        self.nao_port = app_config.getint('nao_port')
+        nao_ip = app_config['nao_ip']
+        nao_port = app_config.getint('nao_port')
         self.app_port = app_config.getint('app_port')
         self.backend_port = app_config.getint('backend_port')
 
+        self.robot = Nao_Robot_wrapper_36(nao_ip, nao_port)
         # Quiz config
         config_quiz_file_path = app_config['quiz_file_path']
         if os.path.isabs(config_quiz_file_path):
@@ -57,7 +72,16 @@ class QuizManager:
         return r
 
     def get_gif(self, gif):
-        return self.get_gif_string(gif)
+        if self.mode == 'B':
+            if gif == 'start_quiz':
+                self.robot.runBEHAVIOR('welcome')
+            elif gif == 'end_quiz':
+                self.robot.runBEHAVIOR('good_bye')
+            else:
+                print(f'unknown gif requested {gif}')
+            return 'mode_B_please_ignore'
+        else:
+            return self.get_gif_string(gif)
 
     # return current question
     def get_question(self, idx):
@@ -74,6 +98,8 @@ class QuizManager:
                         'possible_answers': self.possible_answers[self.current_question_idx]}
             self.question_number += 1
 
+            # Show question intro
+
         return question
 
     # check if submitted answer is in-fact the correct answer
@@ -88,15 +114,25 @@ class QuizManager:
             response = {'answer': 'correct',
                         'response': self.positive_responses[self.current_question_idx],
                         'gif': self.get_gif_string('correct_answer')}
+            if self.mode == 'B':
+                self.robot.runBEHAVIOR(self.correct_behaviors[randint.randint(0, len(self.correct_behaviors) - 1)])
+                # Execute extra speech for mode B
         else:
             response = {'answer': 'incorrect',
                         'response': self.negative_responses[self.current_question_idx],
                         'gif': self.get_gif_string('incorrect_answer')}
+            if self.mode == 'B':
+                self.robot.runBEHAVIOR(self.incorrect_behaviors[randint.randint(0, len(self.incorrect_behaviors) - 1)])
+                # Execute extra speech for mode B
 
         return response
 
     # return current hint
     def get_hint(self):
+        if self.mode == 'B':
+            if self.hint_behaviors:
+                self.robot.runBEHAVIOR(self.hint_behaviors[randint.randint(0, len(self.hint_behaviors) - 1)])
+
         return self.hints[self.current_question_idx]
 
     # parse the quiz json file
