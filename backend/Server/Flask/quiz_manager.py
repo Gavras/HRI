@@ -3,7 +3,8 @@ import json
 import os
 from configparser import ConfigParser
 import logging
-
+import socket
+import time
 
 class QuizManager:
     def __init__(self):
@@ -13,13 +14,17 @@ class QuizManager:
         config = ConfigParser()
         config.read(config_file_path)
         app_config = config['config']
-
+        self.mode = 'B'
         # Network configs
         self.nao_ip = app_config['nao_ip']
         self.nao_port = app_config.getint('nao_port')
         self.app_port = app_config.getint('app_port')
         self.backend_port = app_config.getint('backend_port')
-
+        self.soc = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.soc.bind((socket.gethostname(),1234))
+        self.soc.listen(20)
+        self.clientsocket,self.adress = self.soc.accept()
+        
         # Quiz config
         config_quiz_file_path = app_config['quiz_file_path']
         if os.path.isabs(config_quiz_file_path):
@@ -57,11 +62,24 @@ class QuizManager:
         return r
 
     def get_gif(self, gif):
-        return self.get_gif_string(gif)
+          if self.mode == 'B':
+            if gif == 'start_quiz':
+                  return 'mode_B_please_ignore'
+            elif gif == 'end_quiz':
+                self.clientsocket.send(bytes("end","utf-8"))
+            else:
+                print(f'unknown gif requested {gif}')
+            return 'mode_B_please_ignore'
+          else:
+            return self.get_gif_string(gif)
+          
 
     # return current question
     def get_question(self, idx):
         if idx is not None:
+            
+            if int(idx)==0 :
+                 self.clientsocket.send(bytes("start","utf-8"))
             self.current_question_idx = int(idx)
             self.question_number = int(idx)
         else:
@@ -85,10 +103,12 @@ class QuizManager:
     def submit_answer(self, answer):
         # extract correct response and move to next question if the answer is correct
         if self.check_answer(answer):
+            self.clientsocket.send(bytes("true","utf-8"))
             response = {'answer': 'correct',
                         'response': self.positive_responses[self.current_question_idx],
                         'gif': self.get_gif_string('correct_answer')}
         else:
+            self.clientsocket.send(bytes("false","utf-8"))
             response = {'answer': 'incorrect',
                         'response': self.negative_responses[self.current_question_idx],
                         'gif': self.get_gif_string('incorrect_answer')}
@@ -97,6 +117,7 @@ class QuizManager:
 
     # return current hint
     def get_hint(self):
+        self.clientsocket.send(bytes("hint","utf-8"))
         return self.hints[self.current_question_idx]
 
     # parse the quiz json file

@@ -35,6 +35,11 @@
     height: 10%;
 }
 
+.q-p {
+    font-size: 12px;
+    max-height: 400px;
+}
+
 .h-fc {
     height: fit-content;
 }

@@ -3,5 +3,3 @@
 node_modules
 .eslintcache
 package-lock.json
-
-user_actions.log
