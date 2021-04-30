@@ -9,6 +9,7 @@ app = Flask(__name__)
 # HRI quiz manager
 manager = QuizManager()
 
+
 @app.route('/')
 def index():
     return 'index'
