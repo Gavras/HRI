@@ -14,7 +14,7 @@ jobs:
         working-directory: ./NaoApp
     steps:
       - uses: actions/checkout@v2
-      - run: npm install && npm start
+      - run: npm install
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
