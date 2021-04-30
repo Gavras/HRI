@@ -18,14 +18,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - run: echo ${{ secrets.GCP_PROJECT }}
-
       # Setup gcloud CLI
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
-          service_account_key: ${{ secrets.gcp_credentials }}
+          service_account_key: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NAOROBOT_989B9 }}
           export_default_credentials: true
 
       # Build and push image to Google Container Registry
