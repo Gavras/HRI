@@ -21,6 +21,6 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NAOROBOT_989B9 }}'
           channelId: live
           projectId: naorobot-989b9
-          entrypoint: /NaoApp
+          entrypoint: ./NaoApp
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
