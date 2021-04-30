@@ -8,12 +8,6 @@ app = Flask(__name__)
 # HRI quiz manager
 manager = QuizManager()
 
-@app.route('/get_gif', methods=['POST', 'GET'])
-def get_gif():
-    gif = request.args.get('gif')
-    print(f'backend got get_gif request! gif={gif}')
-    return create_response(manager.get_gif(gif))
-
 @app.route('/get_question', methods=['POST', 'GET'])
 def get_question():
     if 'idx' in request.args:

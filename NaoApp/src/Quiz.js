@@ -28,23 +28,7 @@ class Quiz extends Component {
             serverSubmitAnswer: null,
             hint: null,
             phase: Phase.started,
-            serverGif: null,
         };
-        this.getServerGif('start_quiz');
-    }
-
-    getServerGif(gif) {
-        const xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function () {
-            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-                this.setState({
-                    serverGif: JSON.parse(xmlHttp.responseText),
-                });
-            }
-        }.bind(this);
-        const url = this.BACKEND_URL + 'get_gif?gif=' + gif;
-        xmlHttp.open('GET', url, true);
-        xmlHttp.send(null);
     }
 
     getQuestion(first = false) {
@@ -60,17 +44,13 @@ class Quiz extends Component {
                 let phase = Phase.quiz;
                 if (question.question === "No More Questions!") {
                     phase = Phase.ended;
-                    this.getServerGif('end_quiz');
                 }
-                this.setState(prevState => {
-                    return {
-                        question: question,
-                        userAnswer: null,
-                        serverSubmitAnswer: null,
-                        hint: null,
-                        phase: phase,
-                        serverGif: first ? null : prevState.serverGif,
-                    };
+                this.setState({
+                    question: question,
+                    userAnswer: null,
+                    serverSubmitAnswer: null,
+                    hint: null,
+                    phase: phase,
                 });
             }
         }.bind(this);
@@ -145,11 +125,6 @@ class Quiz extends Component {
         return (
             <Col className="w-100 justify-content-center">
                 <Container className="w-100 justify-content-center">
-                    <Row className="w-100 m-auto justify-content-center">
-                        <Col className="w-100 d-flex justify-content-center">
-                            {this.renderStartQuizGif()}
-                        </Col>
-                    </Row>
                     <Row className="mt-1 justify-content-center align-items-center">
                         <Col className="d-flex justify-content-center">
                             {this.renderStartButton()}
@@ -157,16 +132,6 @@ class Quiz extends Component {
                     </Row>
                 </Container>
             </Col>
-        );
-    }
-
-    renderStartQuizGif() {
-        if (!this.state.serverGif) {
-            return null;
-        }
-        const src = this.getGifSrc(this.state.serverGif);
-        return (
-            <Image src={src} alt="" fluid className="h-100"/>
         );
     }
 
@@ -189,9 +154,6 @@ class Quiz extends Component {
                 <Col>
                     {this.renderAnswerOptions()}
                     {this.renderActionButtons()}
-                </Col>
-                <Col>
-                    {this.renderNao()}
                 </Col>
             </>
         );
@@ -306,29 +268,10 @@ class Quiz extends Component {
         );
     }
 
-    renderNao() {
-        let src;
-        if (this.state.serverSubmitAnswer) {
-            src = this.getGifSrc(this.state.serverSubmitAnswer.gif);
-        } else if (this.state.serverGif) {
-            src = this.getGifSrc(this.state.serverGif);
-        } else {
-            src = require('./media/images/nao_picture.png').default;
-        }
-        return (
-            <Image src={src} alt="nao_img" fluid className="h-100 max-vh-50"/>
-        );
-    }
-
     renderEndingPage() {
         return (
             <Col className="w-100 justify-content-center">
                 <Container className="w-100 justify-content-center">
-                    <Row className="w-100 m-auto justify-content-center">
-                        <Col className="w-100 d-flex justify-content-center">
-                            {this.renderEndQuizGif()}
-                        </Col>
-                    </Row>
                     <Row className="mt-1 justify-content-center align-items-center">
                         <Col className="d-flex justify-content-center">
                             {this.renderEndButton()}
@@ -336,16 +279,6 @@ class Quiz extends Component {
                     </Row>
                 </Container>
             </Col>
-        );
-    }
-
-    renderEndQuizGif() {
-        if (!this.state.serverGif) {
-            return null;
-        }
-        const src = this.getGifSrc(this.state.serverGif);
-        return (
-            <Image src={src} alt="" fluid className="h-100"/>
         );
     }
 
@@ -404,10 +337,6 @@ class Quiz extends Component {
             this.state.serverSubmitAnswer.answer === "correct";
     }
 
-    getGifSrc(src) {
-        return 'data:image/jpeg;base64,' + src;
-    }
-
     onAnswerOptionClick = answer => {
         if (this.isCorrectAnswer()) {
             for (const [ref, object] of Object.entries(this.refs)) {
@@ -426,7 +355,10 @@ class Quiz extends Component {
         //add backend request: log action: "which action"
         if (this.state.userAnswer == null) {
             this.setState({
-                serverSubmitAnswer: "Please choose an answer",
+                serverSubmitAnswer: {
+                    'answer': 'incorrect',
+                    'response': "Please choose an answer",
+                },
             });
             return;
         }
