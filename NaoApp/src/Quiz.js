@@ -18,7 +18,7 @@ const Phase = Object.freeze({
 
 class Quiz extends Component {
 
-    BACKEND_URL = 'http://localhost:8002/';
+    BACKEND_URL = 'https://flask-fire-etayi2brka-uc.a.run.app/';
 
     constructor(props) {
         super(props);

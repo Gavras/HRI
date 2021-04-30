@@ -1,12 +1,17 @@
 import flask
 from flask import Flask, request
 from quiz_manager import QuizManager
+import os
 
 # main Flask app
 app = Flask(__name__)
 
 # HRI quiz manager
 manager = QuizManager()
+
+@app.route('/')
+def index():
+    return 'index'
 
 @app.route('/get_question', methods=['POST', 'GET'])
 def get_question():
@@ -38,8 +43,7 @@ def create_response(msg):
     return resp
 
 def flask_main():
-    app.run(host='0.0.0.0', port=manager.backend_port)
-
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', manager.backend_port)))
 
 if __name__ == '__main__':
     flask_main()
