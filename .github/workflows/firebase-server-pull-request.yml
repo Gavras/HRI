@@ -35,8 +35,8 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |-
-          gcloud run deploy ${{ env.SERVICE }} \
+          gcloud run deploy ${{ env.SERVICE_NAME }} \
             --region ${{ env.REGION }} \
-            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
+            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{  github.sha }} \
             --platform "managed" \
             --quiet
