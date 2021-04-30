@@ -37,14 +37,8 @@ def get_hint():
     print('backend got get_hint request!')
     return create_response(manager.get_hint())
 
-@app.route('/log_action', methods=['POST', 'GET'])
-def log_action():
-    message = request.args.get('message')
-    print(f'backend got log_action request! message={message}')
-    manager.log_action(message)
-    return ''
-
 def create_response(msg):
+    msg = flask.jsonify(msg)
     resp = flask.make_response(msg)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp

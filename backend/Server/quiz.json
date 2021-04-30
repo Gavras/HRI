@@ -1,18 +1,366 @@
 {
   "question_1": {
-      "question": "What is an apple?",
-      "possible_answers": ["vegetable", "fruit", "instrument", "animal"],
-      "correct_answer": "1",
-      "hint": "It is not a vegetable",
-      "positive_response": "Good Job!",
-      "negative_response": "Try Again!"
-    },
+    "question": [
+      {
+        "type": "text",
+        "value": "The BeaverBall is a toy that can be operated by remote control, and understands each of four direction commands."
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/default/files/Kryptis.png"
+      },
+      {
+        "type": "text",
+        "value": "If the BeaverBall moves to a white square, it drops down one level. The BeaverBall ignores commands that cause it to move outside the borders."
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/default/files/rutulys.png"
+      },
+      {
+        "type": "text",
+        "value": "Look at the position of the BeaverBall in the picture above. Which of the following lists of directions will cause the BeaverBall to reach the GOAL?"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "E, W, N, W, W"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "E, W, N, E, S, W"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "E, W, E, N, S, W"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "E, N, W, S, N, E, W"
+        }
+      ]
+    ],
+    "correct_answer": "3",
+    "hint": "at least 6 steps",
+    "positive_response": "Good Job!",
+    "negative_response": "The BeaverBall stops on a square that is not the GOAL square. Try Again!"
+  },
   "question_2": {
-    "question": "How many lines are in a rectangle?",
-    "possible_answers": ["Two", "Three", "Four", "Five"],
-    "correct_answer": "2",
-    "hint": "It is an even number",
+    "question": [
+      {
+        "type": "text",
+        "value": "Beaver Joe has started a new laundry business. He has got three machines: a washer, a dryer and a pressing iron. Every machine is connected through its own timer which provides for half an hour of electricity. So, when a client arrives, he needs 90 minutes for all of the three procedures. And three clients using the machinery consequently need 270 minutes."
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/fast-laundry.png"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "90 minutes"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "120 minutes"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "150 minutes"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "270 minutes"
+        }
+      ]
+    ],
+    "correct_answer": "3",
+    "hint": " beaver 1 needs 90 minutes anyway. During his use of the dryer, beaver 2 starts with washing, and finishes drying at the same time that beaver 1 is finishing with the iron and beaver 3 finishes his washing. So beaver 3 needs two more turns (dryer and iron).",
     "positive_response": "Great Job!",
     "negative_response": "Oops, Try Again!"
+  },
+  "question_3": {
+    "question": [
+      {
+        "type": "text",
+        "value": "The Beaver has developed a programming language for paper folding. This language can be used to explain how to fold any piece of paper with straight sides. One of the commands in this language is fold.\ne = fold(a, b) means:\nfold the piece of paper in a way that side a is lying completely on side b.\nIn that way you create a new side, the fold. This line is called e.\nExample:"
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-folding.png"
+      },
+      {
+        "type": "text",
+        "value": "Please note, that the paper remains on the table during folding, and that the length of side b is twice the length of side a.\n\nHow does the paper rectangle (a, b, c, d) look like after the execution of these three commands?\n\ne = fold(c, a); f = fold(c, d); g = fold(a, f)"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingA.png"
+        }
+      ],
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingB.png"
+        }
+      ],
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingC.png"
+        }
+      ],
+      [
+        {
+          "type": "image",
+          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingD.png"
+        }
+      ]
+    ],
+    "correct_answer": "1",
+    "hint": "Someone should have a blue hat instead of a red one.",
+    "positive_response": "Great Job!",
+    "negative_response": "Try Again!"
+  },
+  "question_4": {
+    "question": [
+      {
+        "type": "text",
+        "value": "Jane and Jill play a board game Pirate Hunters. At each move, one of the policemen (but not both) moves to a neighboring place. In the next move, the pirate, who is faster and always jumps for two places. Policemen always move to an unoccupied place – they cannot move to a place occupied by the pirate or his colleague policeman. The game is finished when the pirate is forced to jump onto one of the policemen … which would be now (see the picture), except that it is currently the policemen turn. To win, the policemen must force the pirate into this position when it is the pirate's turn."
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/default/files/Piratas_0.png"
+      },
+      {
+        "type": "text",
+        "value": "Jane, who plays the pirate is quite skilled at evading being captured. You are smart as well, though. If you help Jill play a perfect game, how many moves will she make before the pirate is caught?"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "2"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "3"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "5"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "Jill cannot win"
+        }
+      ]
+    ],
+    "correct_answer": "3",
+    "hint": "if Jane plays perfectly. Let us assume that Jill actually forced Jane into the above situation and it is Jane's turn. What did the board look like before Jill's last move?",
+    "positive_response": "Great Job!",
+    "negative_response": "Oops, Try Again!"
+  },
+  "question_5": {
+    "question": [
+      {
+        "type": "text",
+        "value": "The beaver community designs a new dam on the river. They want to use the least number of logs. They are smart, so they want to take advantage of the small islands in the river. The picture shows the river, the islands, and the number of logs needed to build each dam segment."
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/default/files/Uztvanka_0.png"
+      },
+      {
+        "type": "text",
+        "value": "What is the least number of logs needed for the new dam?"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "14 logs"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "15 logs"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "16 logs"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "17 logs"
+        }
+      ]
+    ],
+    "correct_answer": "1",
+    "hint": "It is an odd number",
+    "positive_response": "Great Job!",
+    "negative_response": "Oops, Try Again!"
+  },
+  "question_6": {
+    "question": [
+      {
+        "type": "text",
+        "value": "B-taro is planning an animation, which shows a sequence of pictures of a face. The animation should run smoothly. Therefore, the order of the pictures is correct, if only one attribute of the face changes from one picture to the next. Unfortunately, the pictures got mixed up. Now B-taro must find the correct order again. Luckily, he knows which picture is last. He labels the five other pictures with letters A to E."
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/default/files/Sypsenos.PNG"
+      },
+      {
+        "type": "text",
+        "value": "What is the correct order of the five other pictures?"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "D -> B -> E -> C -> A"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "C -> B -> D -> A -> E"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "D -> B -> C -> E -> A"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "B -> D -> C -> A -> E"
+        }
+      ]
+    ],
+    "correct_answer": "3",
+    "hint": "Last = E",
+    "positive_response": "Great Job!",
+    "negative_response": "Try Again!"
+  },
+  "question_7": {
+    "question": [
+      {
+        "type": "text",
+        "value": "Beaver has constructed a pipeline system to water his apple tree.\n\nThe expressions contain variables A, B, C, D, which may be true or false. A variable has the value true, if the corresponding gate is open, and false, if it is closed.\n\nIn which case the apple tree gets water?"
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/water-supply-task.png"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "A = false, B = true, C = false, D = false"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "A = true, B = true, C = false, D = false"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "A = true, B = false, C = false, D = true"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "A = false, B = false, C = false, D = true"
+        }
+      ]
+    ],
+    "correct_answer": "0",
+    "hint": "D = True",
+    "positive_response": "Great Job!",
+    "negative_response": "Try Again!"
+  },
+  "question_8": {
+    "question": [
+      {
+        "type": "text",
+        "value": "The Castorians store their data in a cloud of four interconnected server computers. The picture shows all the connections between the servers.\nFor a higher data safety all data is stored on both store servers STORE-1 and STORE-2.\nFor a higher access probability all data is accessible through both port servers PORT-1 and PORT-2.\nThe data is stored only on store servers and port servers do not store any data.\nSTORE-1 is accessible through STORE-2 and vice versa.\n\nWhich statement is FALSE ?"
+      },
+      {
+        "type": "image",
+        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/cloud-of-castoria.png"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "If STORE-1 and PORT-2 are destroyed then all Castorian data is inaccessible."
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "If STORE-2 and STORE-1 are destroyed then all data in the Castorian cloud is lost."
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "If PORT-1 and PORT-2 are destroyed then all Castorian data is inaccessible."
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "If PORT-2 and PORT-1 are destroyed then all data in the Castorian cloud is lost."
+        }
+      ]
+    ],
+    "correct_answer": "3",
+    "hint": "If PORT-2 and PORT-1 are destroyed then all data in the Castorian cloud is inaccessible, but not lost.",
+    "positive_response": "Great Job!",
+    "negative_response": "Try Again!"
   }
 }
