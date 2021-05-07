@@ -5,7 +5,7 @@ import logging
 import socket
 
 class QuizManager:
-    def __init__(self, brain=True):
+    def __init__(self):
         cur_dir = os.path.dirname(os.path.abspath(__file__))
         config_file_path = os.path.join(cur_dir, 'config.ini')
         config = ConfigParser()
@@ -17,7 +17,6 @@ class QuizManager:
         self.app_port = app_config.getint('app_port')
         self.backend_port = app_config.getint('backend_port')
 
-        self.brain_alive = brain
         self.set_brain_socket()
 
         config_quiz_file_path = app_config['quiz_file_path']
@@ -36,7 +35,7 @@ class QuizManager:
             pass
 
     def set_brain_socket(self):
-        if not self.brain_alive:
+        if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
             print('skipping establish communication with the brain')
             return
 
@@ -48,7 +47,7 @@ class QuizManager:
         print('backend is communicating with the brain')
 
     def send_to_brain(self, msg):
-        if not self.brain_alive:
+        if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
             return
 
         self.brain.send(bytes(msg, 'utf-8'))
