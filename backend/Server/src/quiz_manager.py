@@ -4,6 +4,8 @@ from configparser import ConfigParser
 import logging
 import socket
 
+os.environ['QUIZ_MANAGER_NO_BRAIN'] = '1'
+
 class QuizManager:
     def __init__(self):
         cur_dir = os.path.dirname(os.path.abspath(__file__))
