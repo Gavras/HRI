@@ -2,12 +2,13 @@ import flask
 from flask import Flask, request
 from quiz_manager import QuizManager
 import os
+import argparse
 
 # main Flask app
 app = Flask(__name__)
 
 # HRI quiz manager
-manager = QuizManager()
+manager = None
 
 
 @app.route('/')
@@ -46,5 +47,18 @@ def create_response(msg):
 def flask_main():
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', manager.backend_port)))
 
-if __name__ == '__main__':
+def manager_main():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--no_brain', default=False, action='store_true')
+    args = parser.parse_args()
+
+    global manager
+    manager = QuizManager(brain=not args.no_brain)
+
+def main():
+    manager_main()
     flask_main()
+
+
+if __name__ == '__main__':
+    main()

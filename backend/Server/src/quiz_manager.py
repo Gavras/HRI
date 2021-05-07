@@ -1,30 +1,25 @@
-import base64
 import json
 import os
 from configparser import ConfigParser
 import logging
 import socket
-import time
 
 class QuizManager:
-    def __init__(self):
-        # read and extract config from file to a dictionary of parameters
+    def __init__(self, brain=True):
         cur_dir = os.path.dirname(os.path.abspath(__file__))
         config_file_path = os.path.join(cur_dir, 'config.ini')
         config = ConfigParser()
         config.read(config_file_path)
         app_config = config['config']
-        # Network configs
+
         self.nao_ip = app_config['nao_ip']
         self.nao_port = app_config.getint('nao_port')
         self.app_port = app_config.getint('app_port')
         self.backend_port = app_config.getint('backend_port')
-#         self.soc = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-#         self.soc.bind((socket.gethostname(),1234))
-#         self.soc.listen(20)
-#         self.clientsocket,self.adress = self.soc.accept()
 
-        # Quiz config
+        self.brain_alive = brain
+        self.set_brain_socket()
+
         config_quiz_file_path = app_config['quiz_file_path']
         if os.path.isabs(config_quiz_file_path):
             quiz_file_path = config_quiz_file_path
@@ -40,6 +35,24 @@ class QuizManager:
         with open(self.log_path, 'w'):
             pass
 
+    def set_brain_socket(self):
+        if not self.brain_alive:
+            print('skipping establish communication with the brain')
+            return
+
+        print('backend tries to establish communication with the brain')
+        self.brain_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.brain_socket.bind((socket.gethostname(), 9000))
+        self.brain_socket.listen(1)
+        self.brain, _ = self.brain_socket.accept()
+        print('backend is communicating with the brain')
+
+    def send_to_brain(self, msg):
+        if not self.brain_alive:
+            return
+
+        self.brain.send(bytes(msg, 'utf-8'))
+
     def get_logger(self):
         new_logger = logging.getLogger(__name__)
         new_logger.setLevel(logging.INFO)
@@ -53,10 +66,10 @@ class QuizManager:
         self.logger.info(message)
 
 
-    # return current question
     def get_question(self, idx):
+        if idx == 0:
+            self.send_to_brain('start')
         if idx is not None:
-#             self.clientsocket.send(bytes("start","utf-8"))
             self.current_question_idx = int(idx)
             self.question_number = int(idx)
         else:
@@ -70,31 +83,25 @@ class QuizManager:
             self.question_number += 1
         return question
 
-    # check if submitted answer is in-fact the correct answer
     def check_answer(self, answer):
-        # check if the answer provided matches the correct answer
         return self.correct_answers[self.current_question_idx] == answer
 
-    # submit answer and return response based on success
     def submit_answer(self, answer):
-        # extract correct response and move to next question if the answer is correct
         if self.check_answer(answer):
-#             self.clientsocket.send(bytes("true","utf-8"))
+            self.send_to_brain('true')
             response = {'answer': 'correct',
                         'response': self.positive_responses[self.current_question_idx]}
         else:
-#             self.clientsocket.send(bytes("false","utf-8"))
+            self.send_to_brain('false')
             response = {'answer': 'incorrect',
                         'response': self.negative_responses[self.current_question_idx]}
 
         return response
 
-    # return current hint
     def get_hint(self):
-#         self.clientsocket.send(bytes("hint","utf-8"))
+        self.send_to_brain('hint')
         return self.hints[self.current_question_idx]
 
-    # parse the quiz json file
     @staticmethod
     def parse_quiz(quiz_file_path):
         questions = []
@@ -104,12 +111,10 @@ class QuizManager:
         positive_responses = []
         negative_responses = []
 
-        # parse data from quiz JSON file
         with open(quiz_file_path, 'r') as quiz_file:
             data = quiz_file.read()
         quiz_data = json.loads(data)
 
-        # extract the data from parsed JSON quiz
         for question_key in quiz_data:
             quiz_question = quiz_data[question_key]
             questions.append(quiz_question["question"])
