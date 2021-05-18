@@ -52,6 +52,7 @@ class QuizManager:
         if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
             return
 
+        self.brain.connect(gals_ip, 9000)
         self.brain.send(bytes(msg, 'utf-8'))
 
     def get_logger(self):
