@@ -3,173 +3,66 @@
     "question": [
       {
         "type": "text",
-        "value": "The BeaverBall is a toy that can be operated by remote control, and understands each of four direction commands."
+        "value": "Pattern recognition is another essential skill measured by many IQ exams. Which image best completes the pattern?"
       },
       {
         "type": "image",
-        "value": "https://www.bebras.org/sites/default/files/Kryptis.png"
-      },
-      {
-        "type": "text",
-        "value": "If the BeaverBall moves to a white square, it drops down one level. The BeaverBall ignores commands that cause it to move outside the borders."
-      },
-      {
-        "type": "image",
-        "value": "https://www.bebras.org/sites/default/files/rutulys.png"
-      },
-      {
-        "type": "text",
-        "value": "Look at the position of the BeaverBall in the picture above. Which of the following lists of directions will cause the BeaverBall to reach the GOAL?"
+        "value": "https://www.tests.com/dbadmin/image/examimage/question6.jpg"
       }
     ],
     "possible_answers": [
       [
         {
           "type": "text",
-          "value": "E, W, N, W, W"
+          "value": "a"
         }
       ],
       [
         {
           "type": "text",
-          "value": "E, W, N, E, S, W"
+          "value": "b"
         }
       ],
       [
         {
           "type": "text",
-          "value": "E, W, E, N, S, W"
+          "value": "c"
         }
       ],
       [
         {
           "type": "text",
-          "value": "E, N, W, S, N, E, W"
+          "value": "d"
         }
       ]
     ],
-    "correct_answer": "3",
-    "hint": "at least 6 steps",
-    "positive_response": "Good Job!",
-    "negative_response": "The BeaverBall stops on a square that is not the GOAL square. Try Again!"
+    "correct_answer": "0",
+    "hint": "Only image A contains two circles, which best follows the pattern given, in relation to the two squares, forming the sequence of one square, two squares, one circle, two circles. The other options do not show two circles in any form.",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
   },
-
-
-
   "question_2": {
     "question": [
       {
         "type": "text",
-        "value": "Beaver Joe has started a new laundry business. He has got three machines: a washer, a dryer and a pressing iron. Every machine is connected through its own timer which provides for half an hour of electricity. So, when a client arrives, he needs 90 minutes for all of the three procedures. And three clients using the machinery consequently need 270 minutes."
+        "value": "How many four sided figures are in this diagram?"
       },
       {
         "type": "image",
-        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/fast-laundry.png"
+        "value": "https://www.tests.com/dbadmin/image/examimage/question-17.jpg"
       }
     ],
     "possible_answers": [
-      [
-        {
-          "type": "text",
-          "value": "90 minutes"
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "value": "120 minutes"
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "value": "150 minutes"
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "value": "270 minutes"
-        }
-      ]
-    ],
-    "correct_answer": "3",
-    "hint": " beaver 1 needs 90 minutes anyway. During his use of the dryer, beaver 2 starts with washing, and finishes drying at the same time that beaver 1 is finishing with the iron and beaver 3 finishes his washing. So beaver 3 needs two more turns (dryer and iron).",
-    "positive_response": "Great Job!",
-    "negative_response": "Oops, Try Again!"
-  },
-  "question_3": {
-    "question": [
-      {
-        "type": "text",
-        "value": "The Beaver has developed a programming language for paper folding. This language can be used to explain how to fold any piece of paper with straight sides. One of the commands in this language is fold.\ne = fold(a, b) means:\nfold the piece of paper in a way that side a is lying completely on side b.\nIn that way you create a new side, the fold. This line is called e.\nExample:"
-      },
-      {
-        "type": "image",
-        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-folding.png"
-      },
-      {
-        "type": "text",
-        "value": "Please note, that the paper remains on the table during folding, and that the length of side b is twice the length of side a.\n\nHow does the paper rectangle (a, b, c, d) look like after the execution of these three commands?\n\ne = fold(c, a); f = fold(c, d); g = fold(a, f)"
-      }
-    ],
-    "possible_answers": [
-      [
-        {
-          "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingA.png"
-        }
-      ],
-      [
-        {
-          "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingB.png"
-        }
-      ],
-      [
-        {
-          "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingC.png"
-        }
-      ],
-      [
-        {
-          "type": "image",
-          "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/paper-foldingD.png"
-        }
-      ]
-    ],
-    "correct_answer": "1",
-    "hint": "Someone should have a blue hat instead of a red one.",
-    "positive_response": "Great Job!",
-    "negative_response": "Try Again!"
-  },
-  "question_4": {
-    "question": [
-      {
-        "type": "text",
-        "value": "Jane and Jill play a board game Pirate Hunters. At each move, one of the policemen (but not both) moves to a neighboring place. In the next move, the pirate, who is faster and always jumps for two places. Policemen always move to an unoccupied place – they cannot move to a place occupied by the pirate or his colleague policeman. The game is finished when the pirate is forced to jump onto one of the policemen … which would be now (see the picture), except that it is currently the policemen turn. To win, the policemen must force the pirate into this position when it is the pirate's turn."
-      },
-      {
-        "type": "image",
-        "value": "https://www.bebras.org/sites/default/files/Piratas_0.png"
-      },
-      {
-        "type": "text",
-        "value": "Jane, who plays the pirate is quite skilled at evading being captured. You are smart as well, though. If you help Jill play a perfect game, how many moves will she make before the pirate is caught?"
-      }
-    ],
-    "possible_answers": [
-      [
-        {
-          "type": "text",
-          "value": "2"
-        }
-      ],
       [
         {
           "type": "text",
           "value": "3"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "4"
         }
       ],
       [
@@ -181,189 +74,257 @@
       [
         {
           "type": "text",
-          "value": "Jill cannot win"
+          "value": "6"
         }
       ]
     ],
     "correct_answer": "3",
-    "hint": "if Jane plays perfectly. Let us assume that Jill actually forced Jane into the above situation and it is Jane's turn. What did the board look like before Jill's last move?",
-    "positive_response": "Great Job!",
-    "negative_response": "Oops, Try Again!"
+    "hint": "6 four-sided figures. If you got 4, you may have forgotten to count the rectangle split in half as a whole four-sided figure. If you got 5, you may have forgotten to count the L shape and rectangle (in upper left corner) as one four-sided figure. If you got 7, you may have counted L shapes, which have six sides.",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
+  },
+  "question_3": {
+    "question": [
+      {
+        "type": "text",
+        "value": "Which one of these figures is least like the other three?"
+      },
+      {
+        "type": "image",
+        "value": "https://www.tests.com/dbadmin/image/examimage/questions23.jpg"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "a"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "b"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "c"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "d"
+        }
+      ]
+    ],
+    "correct_answer": "3",
+    "hint": "The figure is flipped horizontally.",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
+  },
+  "question_4": {
+    "question": [
+      {
+        "type": "text",
+        "value": "If you were standing in the middle of the Republic of Sudan, facing west, and then turned left, which country would be located directly north?"
+      },
+      {
+        "type": "image",
+        "value": "https://www.tests.com/dbadmin/image/examimage/iq-test-question-25.jpg"
+      }
+    ],
+    "possible_answers": [
+      [
+        {
+          "type": "text",
+          "value": "Mali"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "Niger"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "Egypt"
+        }
+      ],
+      [
+        {
+          "type": "text",
+          "value": "Iran"
+        }
+      ]
+    ],
+    "correct_answer": "2",
+    "hint": "If you were standing in the middle of the Republic of Sudan, facing west, then you would be facing the country of Chad. If you then turned left, you would be facing south, toward the Democratic Republic of Congo, or Tanzania. The country directly behind you, to the north, would be Egypt.",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
   },
   "question_5": {
     "question": [
       {
         "type": "text",
-        "value": "The beaver community designs a new dam on the river. They want to use the least number of logs. They are smart, so they want to take advantage of the small islands in the river. The picture shows the river, the islands, and the number of logs needed to build each dam segment."
+        "value": "Which image best represents the area with the question mark inside?"
       },
       {
         "type": "image",
-        "value": "https://www.bebras.org/sites/default/files/Uztvanka_0.png"
-      },
-      {
-        "type": "text",
-        "value": "What is the least number of logs needed for the new dam?"
+        "value": "https://www.tests.com/dbadmin/image/examimage/iq-question-26.jpg"
       }
     ],
     "possible_answers": [
       [
         {
           "type": "text",
-          "value": "14 logs"
+          "value": "a"
         }
       ],
       [
         {
           "type": "text",
-          "value": "15 logs"
+          "value": "b"
         }
       ],
       [
         {
           "type": "text",
-          "value": "16 logs"
+          "value": "c"
         }
       ],
       [
         {
           "type": "text",
-          "value": "17 logs"
+          "value": "d"
         }
       ]
     ],
-    "correct_answer": "1",
-    "hint": "It is an odd number",
-    "positive_response": "Great Job!",
-    "negative_response": "Oops, Try Again!"
+    "correct_answer": "2",
+    "hint": "If you chose A, you may not have seen the overlap pattern. The three circles on the right are below the biggest, middle circle, whereas the circles on the left are above.",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
   },
   "question_6": {
     "question": [
       {
         "type": "text",
-        "value": "B-taro is planning an animation, which shows a sequence of pictures of a face. The animation should run smoothly. Therefore, the order of the pictures is correct, if only one attribute of the face changes from one picture to the next. Unfortunately, the pictures got mixed up. Now B-taro must find the correct order again. Luckily, he knows which picture is last. He labels the five other pictures with letters A to E."
+        "value": "What is the missing number?"
       },
       {
         "type": "image",
-        "value": "https://www.bebras.org/sites/default/files/Sypsenos.PNG"
-      },
-      {
-        "type": "text",
-        "value": "What is the correct order of the five other pictures?"
+        "value": "https://www.tests.com/dbadmin/image/examimage/iq-test-question-30.gif"
       }
     ],
     "possible_answers": [
       [
         {
           "type": "text",
-          "value": "D -> B -> E -> C -> A"
+          "value": "5"
         }
       ],
       [
         {
           "type": "text",
-          "value": "C -> B -> D -> A -> E"
+          "value": "4"
         }
       ],
       [
         {
           "type": "text",
-          "value": "D -> B -> C -> E -> A"
+          "value": "7"
         }
       ],
       [
         {
           "type": "text",
-          "value": "B -> D -> C -> A -> E"
+          "value": "9"
         }
       ]
     ],
-    "correct_answer": "3",
-    "hint": "Last = E",
-    "positive_response": "Great Job!",
-    "negative_response": "Try Again!"
+    "correct_answer": "2",
+    "hint": "Subtract the sum of the numbers to the right and left of the diamond from the sum of the numbers above and below the diamond to find the number in the middle.",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
   },
   "question_7": {
     "question": [
       {
         "type": "text",
-        "value": "Beaver has constructed a pipeline system to water his apple tree.\n\nThe expressions contain variables A, B, C, D, which may be true or false. A variable has the value true, if the corresponding gate is open, and false, if it is closed.\n\nIn which case the apple tree gets water?"
-      },
-      {
-        "type": "image",
-        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/water-supply-task.png"
+        "value": "Which number best completes the pattern?\n17, 12, 7\n3, 7, 11\n21, 16, (?)"
       }
     ],
     "possible_answers": [
       [
         {
           "type": "text",
-          "value": "A = false, B = true, C = false, D = false"
+          "value": "12"
         }
       ],
       [
         {
           "type": "text",
-          "value": "A = true, B = true, C = false, D = false"
+          "value": "11"
         }
       ],
       [
         {
           "type": "text",
-          "value": "A = true, B = false, C = false, D = true"
+          "value": "8"
         }
       ],
       [
         {
           "type": "text",
-          "value": "A = false, B = false, C = false, D = true"
+          "value": "3"
         }
       ]
     ],
-    "correct_answer": "0",
-    "hint": "D = True",
-    "positive_response": "Great Job!",
-    "negative_response": "Try Again!"
+    "correct_answer": "1",
+    "hint": "The third row follows the first row's incremental sequence (subtract 5), not the second row's sequence (add 4).",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
   },
   "question_8": {
     "question": [
       {
         "type": "text",
-        "value": "The Castorians store their data in a cloud of four interconnected server computers. The picture shows all the connections between the servers.\nFor a higher data safety all data is stored on both store servers STORE-1 and STORE-2.\nFor a higher access probability all data is accessible through both port servers PORT-1 and PORT-2.\nThe data is stored only on store servers and port servers do not store any data.\nSTORE-1 is accessible through STORE-2 and vice versa.\n\nWhich statement is FALSE ?"
-      },
-      {
-        "type": "image",
-        "value": "https://www.bebras.org/sites/all/themes/bebrasorgtheme/img/tasks-examples/cloud-of-castoria.png"
+        "value": "What number is one quarter of one tenth of one fifth of 200?\n"
       }
     ],
     "possible_answers": [
       [
         {
           "type": "text",
-          "value": "If STORE-1 and PORT-2 are destroyed then all Castorian data is inaccessible."
+          "value": "0.25"
         }
       ],
       [
         {
           "type": "text",
-          "value": "If STORE-2 and STORE-1 are destroyed then all data in the Castorian cloud is lost."
+          "value": "0.5"
         }
       ],
       [
         {
           "type": "text",
-          "value": "If PORT-1 and PORT-2 are destroyed then all Castorian data is inaccessible."
+          "value": "1"
         }
       ],
       [
         {
           "type": "text",
-          "value": "If PORT-2 and PORT-1 are destroyed then all data in the Castorian cloud is lost."
+          "value": "10"
         }
       ]
     ],
-    "correct_answer": "3",
-    "hint": "If PORT-2 and PORT-1 are destroyed then all data in the Castorian cloud is inaccessible, but not lost.",
-    "positive_response": "Great Job!",
-    "negative_response": "Try Again!"
+    "correct_answer": "2",
+    "hint": "One fifth (1 / 5) of 200 = 0.2 x 200 = 40. One tenth (1 / 10) of 40 = 0.1 x 40 = 4. One quarter (1 / 4) of 4 = 0.25 x 4 = 1.",
+    "positive_response": "Good job!",
+    "negative_response": "Try again!"
   }
 }
