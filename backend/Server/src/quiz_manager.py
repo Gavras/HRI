@@ -45,9 +45,9 @@ class QuizManager:
                 brain_socket.settimeout(1)
                 brain_socket.connect((socket.gethostbyname(self.brain_ip), self.brain_port))
                 brain_socket.send(bytes(msg, 'utf-8'))
-                print(f'Sent \"{msg}\" to brain')
+                print(f'Sent \"{msg}\" to brain', flush=True)
             except socket.timeout:
-                print(f'socket.timeout while trying to send \"{msg}\" to brain')
+                print(f'socket.timeout while trying to send \"{msg}\" to brain', flush=True)
             finally:
                 brain_socket.close()
 

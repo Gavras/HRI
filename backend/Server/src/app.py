@@ -22,20 +22,20 @@ def get_question():
     else:
         idx = None
     idx_text = f' idx={idx}' if idx is not None else ''
-    print(f'backend got get_question request!{idx_text}')
+    print(f'backend got get_question request!{idx_text}', flush=True)
     return create_response(manager.get_question(idx))
 
 
 @app.route('/submit_answer', methods=['POST', 'GET'])
 def submit_answer():
     answer = request.args.get('answer')
-    print(f'backend got submit_answer request! answer={answer}')
+    print(f'backend got submit_answer request! answer={answer}', flush=True)
     return create_response(manager.submit_answer(answer))
 
 
 @app.route('/get_hint', methods=['POST', 'GET'])
 def get_hint():
-    print('backend got get_hint request!')
+    print('backend got get_hint request!', flush=True)
     return create_response(manager.get_hint())
 
 
