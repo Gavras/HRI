@@ -43,10 +43,11 @@ class QuizManager:
             brain_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
                 brain_socket.settimeout(1)
-                brain_socket.connect((self.brain_ip, self.brain_port))
+                brain_socket.connect((socket.gethostbyname(self.brain_ip), self.brain_port))
                 brain_socket.send(bytes(msg, 'utf-8'))
+                print(f'Sent \"{msg}\" to brain')
             except socket.timeout:
-                pass
+                print(f'socket.timeout while trying to send \"{msg}\" to brain')
             finally:
                 brain_socket.close()
 
@@ -66,7 +67,7 @@ class QuizManager:
         self.logger.info(message)
 
     def get_question(self, idx):
-        if idx == 0:
+        if idx is not None and int(idx) == 0:
             self.send_to_brain('start')
         if idx is not None:
             self.current_question_idx = int(idx)

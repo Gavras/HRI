@@ -75,7 +75,7 @@ def main():
     robot_ip = '127.0.0.1' if args.local else nao_robot_ip
     nao = NaoRobot(robot_ip=robot_ip, robot_port=nao_robot_port)
     brain_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    brain_socket.bind((socket.gethostname(), brain_port))
+    brain_socket.bind(('0.0.0.0', brain_port))
     brain_socket.listen(1)
 
     while True:
