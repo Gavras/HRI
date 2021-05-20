@@ -4,7 +4,9 @@ from configparser import ConfigParser
 import logging
 import socket
 
-os.environ['QUIZ_MANAGER_NO_BRAIN'] = '1'
+# os.environ['QUIZ_MANAGER_NO_BRAIN'] = '1'
+from threading import Thread
+
 
 class QuizManager:
     def __init__(self):
@@ -14,12 +16,9 @@ class QuizManager:
         config.read(config_file_path)
         app_config = config['config']
 
-        self.nao_ip = app_config['nao_ip']
-        self.nao_port = app_config.getint('nao_port')
-        self.app_port = app_config.getint('app_port')
-        self.backend_port = app_config.getint('backend_port')
-
-        self.set_brain_socket()
+        self.brain_ip = app_config['brain_ip']
+        self.brain_port = int(app_config['brain_port'])
+        self.server_port = app_config.getint('server_port')
 
         config_quiz_file_path = app_config['quiz_file_path']
         if os.path.isabs(config_quiz_file_path):
@@ -27,7 +26,7 @@ class QuizManager:
         else:
             quiz_file_path = os.path.abspath(os.path.join(os.path.dirname(config_file_path), config_quiz_file_path))
         self.questions, self.possible_answers, self.correct_answers, self.hints, \
-            self.positive_responses, self.negative_responses = self.parse_quiz(quiz_file_path)
+        self.positive_responses, self.negative_responses = self.parse_quiz(quiz_file_path)
 
         self.current_question_idx = len(self.questions) - 1
         self.question_number = 1
@@ -36,23 +35,24 @@ class QuizManager:
         with open(self.log_path, 'w'):
             pass
 
-    def set_brain_socket(self):
-        if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
-            print('skipping establish communication with the brain')
-            return
-
-        print('backend tries to establish communication with the brain')
-        self.brain_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        self.brain_socket.bind((socket.gethostname(), 9000))
-        self.brain_socket.listen(1)
-        self.brain, _ = self.brain_socket.accept()
-        print('backend is communicating with the brain')
-
     def send_to_brain(self, msg):
         if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
             return
 
-        self.brain.send(bytes(msg, 'utf-8'))
+        def send_to_brain_t():
+            brain_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            try:
+                brain_socket.settimeout(1)
+                brain_socket.connect((socket.gethostbyname(self.brain_ip), self.brain_port))
+                brain_socket.send(bytes(msg, 'utf-8'))
+                print(f'Sent \"{msg}\" to brain')
+            except socket.timeout:
+                print(f'socket.timeout while trying to send \"{msg}\" to brain')
+            finally:
+                brain_socket.close()
+
+        thread = Thread(target=send_to_brain_t)
+        thread.start()
 
     def get_logger(self):
         new_logger = logging.getLogger(__name__)
@@ -66,9 +66,8 @@ class QuizManager:
     def log_action(self, message):
         self.logger.info(message)
 
-
     def get_question(self, idx):
-        if idx == 0:
+        if idx is not None and int(idx) == 0:
             self.send_to_brain('start')
         if idx is not None:
             self.current_question_idx = int(idx)
