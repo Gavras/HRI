@@ -1,11 +1,12 @@
 import json
-import os
-from configparser import ConfigParser
 import logging
+import os
 import socket
+from configparser import ConfigParser
+from threading import Thread
+
 
 # os.environ['QUIZ_MANAGER_NO_BRAIN'] = '1'
-from threading import Thread
 
 
 class QuizManager:
@@ -67,40 +68,48 @@ class QuizManager:
         self.logger.info(message)
 
     def get_question(self, idx):
-        if idx is not None and int(idx) == 0:
+        if idx > len(self.questions):
+            return f'idx must be less than {len(self.questions)}'
+
+        if idx == 0:
             self.send_to_brain('start')
-        if idx is not None:
-            self.current_question_idx = int(idx)
-            self.question_number = int(idx)
-        else:
-            self.current_question_idx = (self.current_question_idx + 1) % len(self.questions)
-        if self.question_number == len(self.questions):
-            question = {'question': 'No More Questions!',
-                        'possible_answers': []}
-        else:
-            question = {'question': self.questions[self.current_question_idx],
-                        'possible_answers': self.possible_answers[self.current_question_idx]}
-            self.question_number += 1
-        return question
 
-    def check_answer(self, answer):
-        return self.correct_answers[self.current_question_idx] == answer
+        if idx == len(self.questions):
+            return {
+                'question': 'No More Questions!',
+                'possible_answers': []
+            }
+        else:
+            return {
+                'question': self.questions[idx],
+                'possible_answers': self.possible_answers[idx]
+            }
 
-    def submit_answer(self, answer):
-        if self.check_answer(answer):
+    def submit_answer(self, idx, answer):
+        if idx > len(self.questions):
+                return f'idx must be less than {len(self.questions)}'
+
+        if self.correct_answers[idx] == answer:
             self.send_to_brain('true')
-            response = {'answer': 'correct',
-                        'response': self.positive_responses[self.current_question_idx]}
+            response = {
+                'answer': 'correct',
+                'response': self.positive_responses[idx]
+            }
         else:
             self.send_to_brain('false')
-            response = {'answer': 'incorrect',
-                        'response': self.negative_responses[self.current_question_idx]}
+            response = {
+                'answer': 'incorrect',
+                'response': self.negative_responses[idx]
+            }
 
         return response
 
-    def get_hint(self):
+    def get_hint(self, idx):
+        if idx > len(self.questions):
+                return f'idx must be less than {len(self.questions)}'
+
         self.send_to_brain('hint')
-        return self.hints[self.current_question_idx]
+        return self.hints[idx]
 
     @staticmethod
     def parse_quiz(quiz_file_path):

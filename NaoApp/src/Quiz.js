@@ -26,6 +26,7 @@ class Quiz extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            idx: -1,
             question: null,
             userAnswer: null,
             serverSubmitAnswer: null,
@@ -34,7 +35,7 @@ class Quiz extends Component {
         };
     }
 
-    getQuestion(first = false) {
+    getQuestion() {
         const xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
@@ -48,17 +49,19 @@ class Quiz extends Component {
                 if (question.question === "No More Questions!") {
                     phase = Phase.ended;
                 }
-                this.setState({
-                    question: question,
-                    userAnswer: null,
-                    serverSubmitAnswer: null,
-                    hint: null,
-                    phase: phase,
+                this.setState(prevState => {
+                    return {
+                        idx: prevState.idx + 1,
+                        question: question,
+                        userAnswer: null,
+                        serverSubmitAnswer: null,
+                        hint: null,
+                        phase: phase,
+                    };
                 });
             }
         }.bind(this);
-        const url_suffix = first ? '?idx=0' : '';
-        const url = this.BACKEND_URL + 'get_question' + url_suffix;
+        const url = this.BACKEND_URL + 'get_question?idx=' + (this.state.idx + 1);
         xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
@@ -72,7 +75,7 @@ class Quiz extends Component {
                 });
             }
         }.bind(this);
-        const url = this.BACKEND_URL + 'submit_answer?answer=' + this.state.userAnswer;
+        const url = this.BACKEND_URL + 'submit_answer?idx=' + this.state.idx + '&answer=' + this.state.userAnswer;
         xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
@@ -86,7 +89,7 @@ class Quiz extends Component {
                 });
             }
         }.bind(this);
-        xmlHttp.open('GET', this.BACKEND_URL + 'get_hint', true);
+        xmlHttp.open('GET', this.BACKEND_URL + 'get_hint?idx=' + this.state.idx, true);
         xmlHttp.send(null);
     }
 
@@ -378,7 +381,7 @@ class Quiz extends Component {
     };
 
     onStartButtonClick = () => {
-        this.getQuestion(true);
+        this.getQuestion();
     };
 }
 
