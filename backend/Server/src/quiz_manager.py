@@ -3,6 +3,7 @@ import logging
 import os
 import socket
 from configparser import ConfigParser
+from multiprocessing import Queue
 from threading import Thread
 
 
@@ -29,31 +30,45 @@ class QuizManager:
         self.questions, self.possible_answers, self.correct_answers, self.hints, \
         self.positive_responses, self.negative_responses = self.parse_quiz(quiz_file_path)
 
-        self.current_question_idx = len(self.questions) - 1
-        self.question_number = 1
+        self.brain_msg_q = Queue()
+        self.start_brain_thread()
+
         self.log_path = os.path.join(os.path.dirname(quiz_file_path), 'user_actions.log')
         self.logger = self.get_logger()
         with open(self.log_path, 'w'):
             pass
 
-    def send_to_brain(self, msg):
+    def start_brain_thread(self):
         if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
             return
 
-        def send_to_brain_t():
+        thread = Thread(target=self.send_to_brain_t)
+        thread.start()
+
+    def send_to_brain_t(self):
+        if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
+            return
+
+        while True:
+            msg = self.brain_msg_q.get()
             brain_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
                 brain_socket.settimeout(1)
                 brain_socket.connect((socket.gethostbyname(self.brain_ip), self.brain_port))
                 brain_socket.send(bytes(msg, 'utf-8'))
-                print(f'Sent \"{msg}\" to brain', flush=True)
+                answer = brain_socket.recv(1024)
+                if answer == f'Brain accepted msg {msg}':
+                    print(f'Sent \"{msg}\" to brain', flush=True)
             except socket.timeout:
-                print(f'socket.timeout while trying to send \"{msg}\" to brain', flush=True)
+                pass
             finally:
                 brain_socket.close()
 
-        thread = Thread(target=send_to_brain_t)
-        thread.start()
+    def send_to_brain(self, msg):
+        if 'QUIZ_MANAGER_NO_BRAIN' in os.environ:
+            return
+
+        self.brain_msg_q.put(msg)
 
     def get_logger(self):
         new_logger = logging.getLogger(__name__)
@@ -87,7 +102,7 @@ class QuizManager:
 
     def submit_answer(self, idx, answer):
         if idx > len(self.questions):
-                return f'idx must be less than {len(self.questions)}'
+            return f'idx must be less than {len(self.questions)}'
 
         if self.correct_answers[idx] == answer:
             self.send_to_brain('true')
@@ -106,7 +121,7 @@ class QuizManager:
 
     def get_hint(self, idx):
         if idx > len(self.questions):
-                return f'idx must be less than {len(self.questions)}'
+            return f'idx must be less than {len(self.questions)}'
 
         self.send_to_brain('hint')
         return self.hints[idx]

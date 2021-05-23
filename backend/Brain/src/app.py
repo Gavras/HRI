@@ -1,9 +1,9 @@
 import argparse
 import random
 import socket
-
-from naoqi import ALProxy, ALModule, ALBroker
 import time
+
+from naoqi import ALProxy
 
 nao_robot_ip = '1.1.1.1'
 nao_robot_port = 9559
@@ -94,6 +94,9 @@ def main():
             nao.runBEHAVIOR('hint')
         else:
             print('Brain got unknown msg ', msg)
+            continue
+        answer = 'Brain accepted msg ' + msg
+        server.send(bytes(answer))
 
 
 def get_args():
