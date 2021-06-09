@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: naorobot_989b9
+  PROJECT_ID: naorobot-989b9
   SERVICE_NAME: flask-fire
   REGION: us-central1
 
