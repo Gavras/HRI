@@ -32,9 +32,13 @@ class Quiz extends Component {
             serverSubmitAnswer: null,
             hint: null,
             phase: Phase.started,
+            withRobot: false,
+            userName: null,
         };
     }
+    getName() {
 
+    }
     getQuestion() {
         const xmlHttp = new XMLHttpRequest();
         xmlHttp.onreadystatechange = function () {
@@ -132,21 +136,35 @@ class Quiz extends Component {
             <Col className="w-100 justify-content-center">
                 <Container className="w-100 justify-content-center">
                     <Row className="mt-1 justify-content-center align-items-center">
+                        <>
                         <Col className="d-flex justify-content-center">
-                            {this.renderStartButton()}
+                            {this.renderStartButtonWith()}
                         </Col>
+                        <Col className="d-flex justify-content-right">
+                            {this.renderStartButtonWithout()}
+                        </Col>
+                        </>
                     </Row>
                 </Container>
             </Col>
         );
     }
 
-    renderStartButton() {
+    renderStartButtonWith() {
         return (
             <Button className=""
                     variant="success"
-                    onClick={() => this.onStartButtonClick()}>
-                Start Quiz
+                    onClick={() => this.onRobotStartButtonClick()}>
+                    Start Quiz WITH ROBOT!
+            </Button>
+        );
+    }
+    renderStartButtonWithout() {
+        return (
+            <Button className=""
+                    variant="success"
+                    onClick={() => this.onNoRobotStartButtonClick()}>
+                Start Quiz - without robot interaction
             </Button>
         );
     }
@@ -380,7 +398,13 @@ class Quiz extends Component {
         this.getHint();
     };
 
-    onStartButtonClick = () => {
+    onRobotStartButtonClick = () => {
+        this.state.withRobot = true;
+        this.getQuestion();
+    };
+
+    onNoRobotStartButtonClick = () => {
+        this.state.withRobot = false;
         this.getQuestion();
     };
 }
