@@ -4,7 +4,7 @@ import os
 import socket
 from configparser import ConfigParser
 from threading import Thread
-
+import Utility.API_DB as DataBase
 
 # os.environ['QUIZ_MANAGER_NO_BRAIN'] = '1'
 
@@ -16,7 +16,8 @@ class QuizManager:
         config = ConfigParser()
         config.read(config_file_path)
         app_config = config['config']
-
+        user_name='test_name'
+        Thread(target=DataBase.createTable,args=()).start()
         self.brain_ip = app_config['brain_ip']
         self.brain_port = int(app_config['brain_port'])
         self.server_port = app_config.getint('server_port')
@@ -90,12 +91,14 @@ class QuizManager:
                 return f'idx must be less than {len(self.questions)}'
 
         if self.correct_answers[idx] == answer:
+            Thread(target=DataBase.insert_user_action, args=(self.user_name, idx, answer, 'true')).start()
             self.send_to_brain('true')
             response = {
                 'answer': 'correct',
                 'response': self.positive_responses[idx]
             }
         else:
+            Thread(target=DataBase.insert_user_action, args=(self.user_name, idx, answer, 'false')).start()
             self.send_to_brain('false')
             response = {
                 'answer': 'incorrect',
