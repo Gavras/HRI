@@ -90,6 +90,7 @@ class QuizManager:
             self.send_to_brain('start')
 
         if idx == len(self.questions):
+            self.send_to_brain('end')
             return {
                 'question': 'No More Questions!',
                 'possible_answers': []

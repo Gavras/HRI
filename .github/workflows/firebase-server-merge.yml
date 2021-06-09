@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  PROJECT_ID: naorobot_989b9
   SERVICE_NAME: flask-fire
   REGION: us-central1
 
@@ -25,7 +25,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          project_id: ${{ secrets.GCP_PROJECT }}
+          project_id: ${{ secrets.PROJECT_ID }}
           service_account_key: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NAOROBOT_989B9 }}
           export_default_credentials: true
 
