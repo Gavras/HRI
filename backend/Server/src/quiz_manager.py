@@ -16,7 +16,7 @@ class QuizManager:
         config = ConfigParser()
         config.read(config_file_path)
         app_config = config['config']
-        user_name='test_name'
+        self.user_name='test_name'
         Thread(target=DataBase.createTable,args=()).start()
         self.brain_ip = app_config['brain_ip']
         self.brain_port = int(app_config['brain_port'])
