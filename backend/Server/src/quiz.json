@@ -1,13 +1,13 @@
 {
-  "question_1": {
+  "question_5": {
     "question": [
       {
         "type": "text",
-        "value": "Which image best completes the pattern?"
+        "value": "Which image best represents the area with the question mark inside?"
       },
       {
         "type": "image",
-        "value": "https://www.tests.com/dbadmin/image/examimage/question6.jpg"
+        "value": "https://www.tests.com/dbadmin/image/examimage/iq-question-26.jpg"
       }
     ],
     "possible_answers": [
@@ -36,8 +36,8 @@
         }
       ]
     ],
-    "correct_answer": "0",
-    "hint": "Only image A contains two circles, which best follows the pattern given, in relation to the two squares, forming the sequence of one square, two squares, one circle, two circles. The other options do not show two circles in any form.",
+    "correct_answer": "2",
+    "hint": "If you chose A, you may not have seen the overlap pattern. The three circles on the right are below the biggest, middle circle, whereas the circles on the left are above.",
     "positive_response": "Good job!",
     "negative_response": "Try again!"
   },
@@ -167,49 +167,7 @@
     "positive_response": "Good job!",
     "negative_response": "Try again!"
   },
-  "question_5": {
-    "question": [
-      {
-        "type": "text",
-        "value": "Which image best represents the area with the question mark inside?"
-      },
-      {
-        "type": "image",
-        "value": "https://www.tests.com/dbadmin/image/examimage/iq-question-26.jpg"
-      }
-    ],
-    "possible_answers": [
-      [
-        {
-          "type": "text",
-          "value": "a"
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "value": "b"
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "value": "c"
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "value": "d"
-        }
-      ]
-    ],
-    "correct_answer": "2",
-    "hint": "If you chose A, you may not have seen the overlap pattern. The three circles on the right are below the biggest, middle circle, whereas the circles on the left are above.",
-    "positive_response": "Good job!",
-    "negative_response": "Try again!"
-  },
-  "question_6": {
+    "question_6": {
     "question": [
       {
         "type": "text",

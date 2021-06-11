@@ -468,6 +468,9 @@ class Quiz extends Component {
     };
 
     onNameSubmit = (event) => {
+        if(event) {
+            event.preventDefault();
+        }
         this.getQuestion();
     };
 }
