@@ -25,8 +25,14 @@ def get_question():
         idx = int(request.args.get('idx'))
     except ValueError:
         return create_response('idx must be an int')
-    print(f'backend got get_question request! idx={idx}', flush=True)
-    return create_response(manager.get_question(idx))
+    if 'name' not in request.args:
+        return create_response('Must enter name')
+    name = request.args.get('name')
+    if 'withRobot' not in request.args:
+        return create_response('Must enter withRobot')
+    with_robot = request.args.get('withRobot')
+    print(f'backend got get_question request! idx={idx} name={name} with_robot={with_robot}', flush=True,)
+    return create_response(manager.get_question(idx, name, with_robot))
 
 
 @app.route('/submit_answer', methods=['POST', 'GET'])
@@ -40,8 +46,15 @@ def submit_answer():
     if 'answer' not in request.args:
         return create_response('Must enter answer')
     answer = request.args.get('answer')
-    print(f'backend got submit_answer request! idx={idx} answer={answer}', flush=True)
-    return create_response(manager.submit_answer(idx, answer))
+    if 'name' not in request.args:
+        return create_response('Must enter name')
+    name = request.args.get('name')
+    if 'withRobot' not in request.args:
+        return create_response('Must enter withRobot')
+    with_robot = request.args.get('withRobot')
+    print(f'backend got submit_answer request! idx={idx} answer={answer} name={name} with_robot={with_robot}',
+        flush=True)
+    return create_response(manager.submit_answer(idx, answer, name, with_robot))
 
 
 @app.route('/get_hint', methods=['POST', 'GET'])
@@ -52,8 +65,14 @@ def get_hint():
         idx = int(request.args.get('idx'))
     except ValueError:
         return create_response('idx must be an int')
-    print(f'backend got get_hint request! idx={idx}', flush=True)
-    return create_response(manager.get_hint(idx))
+    if 'name' not in request.args:
+        return create_response('Must enter name')
+    name = request.args.get('name')
+    if 'withRobot' not in request.args:
+        return create_response('Must enter withRobot')
+    with_robot = request.args.get('withRobot')
+    print(f'backend got get_hint request! idx={idx} name={name} with_robot={with_robot}', flush=True)
+    return create_response(manager.get_hint(idx, name, with_robot))
 
 
 def create_response(msg):

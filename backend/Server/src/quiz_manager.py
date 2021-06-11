@@ -82,7 +82,7 @@ class QuizManager:
     def log_action(self, message):
         self.logger.info(message)
 
-    def get_question(self, idx):
+    def get_question(self, idx, name, with_robot):
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
@@ -101,7 +101,7 @@ class QuizManager:
                 'possible_answers': self.possible_answers[idx]
             }
 
-    def submit_answer(self, idx, answer):
+    def submit_answer(self, idx, answer, name, with_robot):
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
@@ -120,7 +120,7 @@ class QuizManager:
 
         return response
 
-    def get_hint(self, idx):
+    def get_hint(self, idx, name, with_robot):
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
