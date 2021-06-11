@@ -107,14 +107,14 @@ class QuizManager:
             return f'idx must be less than {len(self.questions)}'
 
         if self.correct_answers[idx] == answer:
-            Thread(target=DataBase.insert_user_action, args=(self.user_name, idx, answer, 'true')).start()
+            Thread(target=DataBase.insert_user_action, args=(name, idx, answer, 'true', with_robot)).start()
             self.send_to_brain('true')
             response = {
                 'answer': 'correct',
                 'response': self.positive_responses[idx]
             }
         else:
-            Thread(target=DataBase.insert_user_action, args=(self.user_name, idx, answer, 'false')).start()
+            Thread(target=DataBase.insert_user_action, args=(name, idx, answer, 'false', with_robot)).start()
             self.send_to_brain('false')
             response = {
                 'answer': 'incorrect',
@@ -128,6 +128,7 @@ class QuizManager:
             return f'idx must be less than {len(self.questions)}'
 
         self.send_to_brain('hint')
+        Thread(target=DataBase.insert_user_action, args=(name, idx, -1, 'hint', with_robot)).start()
         return self.hints[idx]
 
     @staticmethod

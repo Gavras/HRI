@@ -43,7 +43,7 @@ def createTable() -> None:
     try:
 	    
         conn = Connector.DBConnector()
-        action ="CREATE TABLE Users(name TEXT NOT NULL,question_number INTEGER NOT NULL,answer_number INTEGER NOT NULL,answer TEXT NOT NULL,date_time TIMESTAMPTZ DEFAULT Now() ); " \
+        action ="CREATE TABLE Users(name TEXT NOT NULL,question_number INTEGER NOT NULL,answer_number INTEGER NOT NULL,answer TEXT NOT NULL,date_time TIMESTAMPTZ DEFAULT Now() ,with_robot TEXT NOT NULL); " \
 
         conn.execute(action)
         conn.commit()
@@ -95,17 +95,19 @@ def getUser(N) -> ResultSet:
         return result
 
 
-def insert_user_action(name = 'test_user',question=-1,a_number=-1 , Clickanswer='test_click' ) :
+def insert_user_action(name = 'test_user',question=-1,a_number=-1 , Clickanswer='test_click' , _robot="false") :
     conn = None
     conn_valid=True
 
     try:
         conn = Connector.DBConnector()
-        query = sql.SQL("INSERT INTO Users( name, question_number,answer_number,answer) VALUES({username},{question_num},{a_num},{answer_click})").format(
+        query = sql.SQL("INSERT INTO Users( name, question_number,answer_number,answer,with_robot) VALUES({username},{question_num},{a_num},{answer_click},{robot})").format(
                                                                                        username=sql.Literal(name),
                                                                                        a_num=sql.Literal(a_number),
                                                                                        question_num = sql.Literal(question),
-                                                                                       answer_click = sql.Literal(Clickanswer))
+                                                                                       answer_click = sql.Literal(Clickanswer),
+                                                                                       robot = sql.Literal(_robot))
+
         rows_effected, _ = conn.execute(query)
         conn.commit()
     except DatabaseException.ConnectionInvalid as e:
