@@ -94,7 +94,7 @@ def main():
         elif msg == 'false':
             nao.runBEHAVIOR(random.choice(incorrect_behaviors))
         elif msg.startswith('hint:'):
-            nao.runBEHAVIOR('hint')
+#             nao.runBEHAVIOR('hint')
             hint = msg[len('hint:'):]
             nao.runSPEECH(hint)
         else:
