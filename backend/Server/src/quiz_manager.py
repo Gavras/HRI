@@ -5,7 +5,7 @@ import socket
 from configparser import ConfigParser
 from multiprocessing import Queue
 from threading import Thread
-
+import Utility.API_DB as DataBase
 
 # os.environ['QUIZ_MANAGER_NO_BRAIN'] = '1'
 
@@ -17,7 +17,8 @@ class QuizManager:
         config = ConfigParser()
         config.read(config_file_path)
         app_config = config['config']
-
+        self.user_name='test_name'
+        Thread(target=DataBase.createTable,args=()).start()
         self.brain_ip = app_config['brain_ip']
         self.brain_port = int(app_config['brain_port'])
         self.server_port = app_config.getint('server_port')
@@ -82,7 +83,7 @@ class QuizManager:
     def log_action(self, message):
         self.logger.info(message)
 
-    def get_question(self, idx):
+    def get_question(self, idx, name, with_robot):
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
@@ -101,17 +102,19 @@ class QuizManager:
                 'possible_answers': self.possible_answers[idx]
             }
 
-    def submit_answer(self, idx, answer):
+    def submit_answer(self, idx, answer, name, with_robot):
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
         if self.correct_answers[idx] == answer:
+            Thread(target=DataBase.insert_user_action, args=(name, idx, answer, 'true', with_robot)).start()
             self.send_to_brain('true')
             response = {
                 'answer': 'correct',
                 'response': self.positive_responses[idx]
             }
         else:
+            Thread(target=DataBase.insert_user_action, args=(name, idx, answer, 'false', with_robot)).start()
             self.send_to_brain('false')
             response = {
                 'answer': 'incorrect',
@@ -120,11 +123,12 @@ class QuizManager:
 
         return response
 
-    def get_hint(self, idx):
+    def get_hint(self, idx, name, with_robot):
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
         self.send_to_brain('hint')
+        Thread(target=DataBase.insert_user_action, args=(name, idx, -1, 'hint', with_robot)).start()
         return self.hints[idx]
 
     @staticmethod

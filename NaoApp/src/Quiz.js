@@ -12,8 +12,9 @@ import Button from "react-bootstrap/Button";
 
 const Phase = Object.freeze({
     "started": 1,
-    "quiz": 2,
-    "ended": 3,
+    "getName": 2,
+    "quiz": 3,
+    "ended": 4,
 });
 
 class Quiz extends Component {
@@ -32,7 +33,24 @@ class Quiz extends Component {
             serverSubmitAnswer: null,
             hint: null,
             phase: Phase.started,
+            withRobot: false,
+            userName: null,
         };
+    }
+
+    getName() {
+        this.setState(prevState => {
+            return {
+                idx: prevState.idx,
+                question: null,
+                userAnswer: null,
+                serverSubmitAnswer: null,
+                hint: null,
+                phase: Phase.getName,
+                withRobot: prevState.withRobot,
+                userName: null,
+            };
+        });
     }
 
     getQuestion() {
@@ -57,11 +75,14 @@ class Quiz extends Component {
                         serverSubmitAnswer: null,
                         hint: null,
                         phase: phase,
+                        withRobot: prevState.withRobot,
+                        userName: prevState.userName,
                     };
                 });
             }
         }.bind(this);
-        const url = this.BACKEND_URL + 'get_question?idx=' + (this.state.idx + 1);
+        const url = this.BACKEND_URL + 'get_question?idx=' + (this.state.idx + 1) +
+            '&name=' + this.state.userName + '&withRobot=' + this.state.withRobot;
         xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
@@ -75,7 +96,8 @@ class Quiz extends Component {
                 });
             }
         }.bind(this);
-        const url = this.BACKEND_URL + 'submit_answer?idx=' + this.state.idx + '&answer=' + this.state.userAnswer;
+        const url = this.BACKEND_URL + 'submit_answer?idx=' + this.state.idx + '&answer=' + this.state.userAnswer +
+            '&name=' + this.state.userName + '&withRobot=' + this.state.withRobot;
         xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
@@ -89,7 +111,9 @@ class Quiz extends Component {
                 });
             }
         }.bind(this);
-        xmlHttp.open('GET', this.BACKEND_URL + 'get_hint?idx=' + this.state.idx, true);
+        const url = this.BACKEND_URL + 'get_hint?idx=' + this.state.idx +
+            '&name=' + this.state.userName + '&withRobot=' + this.state.withRobot
+        xmlHttp.open('GET', url, true);
         xmlHttp.send(null);
     }
 
@@ -112,6 +136,9 @@ class Quiz extends Component {
             case Phase.started:
                 column = this.renderLandingPage();
                 break;
+            case Phase.getName:
+                column = this.renderNameInput();
+                break;
             case Phase.quiz:
                 column = this.renderQuizContent();
                 break;
@@ -132,8 +159,27 @@ class Quiz extends Component {
             <Col className="w-100 justify-content-center">
                 <Container className="w-100 justify-content-center">
                     <Row className="mt-1 justify-content-center align-items-center">
+                        <>
+                            <Col className="d-flex justify-content-center">
+                                {this.renderWithRobotStartButton()}
+                            </Col>
+                            <Col className="d-flex justify-content-right">
+                                {this.renderNoRobotStartButton()}
+                            </Col>
+                        </>
+                    </Row>
+                </Container>
+            </Col>
+        );
+    }
+
+    renderNameInput() {
+        return (
+            <Col className="w-100 justify-content-center">
+                <Container className="w-100 justify-content-center">
+                    <Row className="mt-1 justify-content-center align-items-center">
                         <Col className="d-flex justify-content-center">
-                            {this.renderStartButton()}
+                            {this.renderInputBox()}
                         </Col>
                     </Row>
                 </Container>
@@ -141,13 +187,44 @@ class Quiz extends Component {
         );
     }
 
-    renderStartButton() {
+    renderWithRobotStartButton() {
         return (
             <Button className=""
                     variant="success"
-                    onClick={() => this.onStartButtonClick()}>
-                Start Quiz
+                    onClick={() => this.onRobotStartButtonClick()}>
+                Start Quiz WITH ROBOT!
             </Button>
+        );
+    }
+
+    renderNoRobotStartButton() {
+        return (
+            <Button className=""
+                    variant="success"
+                    onClick={() => this.onNoRobotStartButtonClick()}>
+                Start Quiz - without robot interaction
+            </Button>
+        );
+    }
+
+    onNameInput = (event) => {
+        this.setState({userName: event.target.value});
+    };
+
+    renderInputBox() {
+        return (
+            <form onSubmit={this.onNameSubmit}>
+                <p>Enter your name:</p>
+                <input type='text'
+                       onChange={this.onNameInput}/>
+
+                <Button className=""
+                        variant="success"
+                        onClick={() => this.onNameSubmit()}>
+                    Submit
+                </Button>
+            </form>
+
         );
     }
 
@@ -380,7 +457,20 @@ class Quiz extends Component {
         this.getHint();
     };
 
-    onStartButtonClick = () => {
+    onRobotStartButtonClick = () => {
+        this.state.withRobot = true;
+        this.getName();
+    };
+
+    onNoRobotStartButtonClick = () => {
+        this.state.withRobot = false;
+        this.getName();
+    };
+
+    onNameSubmit = (event) => {
+        if(event) {
+            event.preventDefault();
+        }
         this.getQuestion();
     };
 }
