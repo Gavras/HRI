@@ -82,16 +82,21 @@ def main():
         server, _ = brain_socket.accept()
         msg = server.recv(1024)
         print('Brain got message ', msg)
-        if msg == 'start':
-            nao.runBEHAVIOR('Behaviors/welcome')
+        if msg.startswith('start:'):
+#             nao.runBEHAVIOR('Behaviors/welcome')
+            name = msg[len('start:'):]
+            text = 'hello ' + name
+            nao.runSPEECH(text)
         elif msg == 'end':
             nao.runBEHAVIOR('Behaviors/good_bye')
         elif msg == 'true':
             nao.runBEHAVIOR(random.choice(correct_behaviors))
         elif msg == 'false':
             nao.runBEHAVIOR(random.choice(incorrect_behaviors))
-        elif msg == 'hint':
+        elif msg.startswith('hint:'):
             nao.runBEHAVIOR('hint')
+            hint = msg[len('hint:'):]
+            nao.runSPEECH(hint)
         else:
             print('Brain got unknown msg ', msg)
             continue

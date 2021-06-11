@@ -321,6 +321,7 @@ class Quiz extends Component {
         return (
             <Alert variant="success">
                 Good Job!
+                Please answer the google form https://forms.gle/YhCKrDDfEP5ezn2Z9
             </Alert>
         );
     }

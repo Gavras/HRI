@@ -88,7 +88,7 @@ class QuizManager:
             return f'idx must be less than {len(self.questions)}'
 
         if idx == 0:
-            self.send_to_brain('start')
+            self.send_to_brain(f'start:{name}')
 
         if idx == len(self.questions):
             self.send_to_brain('end')
@@ -127,9 +127,10 @@ class QuizManager:
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
-        self.send_to_brain('hint')
+        hint = self.hints[idx]
+        self.send_to_brain(f'hint:{hint}')
         Thread(target=DataBase.insert_user_action, args=(name, idx, -1, 'hint', with_robot)).start()
-        return self.hints[idx]
+        return hint
 
     @staticmethod
     def parse_quiz(quiz_file_path):
