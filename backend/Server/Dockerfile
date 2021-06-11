@@ -1,6 +1,7 @@
 FROM python:3.7
 
 RUN pip install Flask gunicorn
+RUN pip3 install psycopg2=2.8.6
 
 COPY src/ app/
 WORKDIR /app
