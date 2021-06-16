@@ -245,7 +245,7 @@ class Quiz extends Component {
     renderQuestionHeader() {
         return (
             <>
-                <b>{this.state.idx}/10</b>
+                <b>{this.state.idx+1}/10</b>
                 {this.getTextAndImageComponentFromList(this.state.question.question)}
             </>
         );
