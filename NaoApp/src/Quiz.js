@@ -22,7 +22,7 @@ class Quiz extends Component {
     BACKEND_URL =
         process.env.REACT_APP_DEBUG ?
             'http://localhost:8002/' :
-            'https://flask-fire-etayi2brka-uc.a.run.app/';
+            'https://flask-fire-xpxh2skzja-uc.a.run.app';
 
     constructor(props) {
         super(props);
