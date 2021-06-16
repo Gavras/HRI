@@ -245,6 +245,7 @@ class Quiz extends Component {
     renderQuestionHeader() {
         return (
             <>
+                <b>{this.state.idx}/10</b>
                 {this.getTextAndImageComponentFromList(this.state.question.question)}
             </>
         );
@@ -367,13 +368,31 @@ class Quiz extends Component {
     }
 
     renderEndButton() {
+        var class2 = "appsMaterialWizButtonPaperbuttonLabel quantumWizButtonPaperbuttonLabel exportLabel"
+        var src = ""
+        if (this.state.withRobot) {
+            src = "https://docs.google.com/forms/d/e/1FAIpQLScld5DwamCA7mOEfwM1c-NGl7U_6L_8gmqvF4GPuTIK8755UQ/viewform?submit=Submit&usp=pp_url&embedded=true&entry.508557711=" + this.state.userName + "&entry.67277978=%D7%9B%D7%9F"
+        } else {
+            src = "https://docs.google.com/forms/d/e/1FAIpQLScld5DwamCA7mOEfwM1c-NGl7U_6L_8gmqvF4GPuTIK8755UQ/viewform?submit=Submit&usp=pp_url&embedded=true&entry.508557711=" + this.state.userName + "&entry.67277978=%D7%9C%D7%90"
+        }
         return (
-            <Alert variant="success" className="m-0 mt-1">
-                Good Job!
-                Please answer the <a href="https://forms.gle/YhCKrDDfEP5ezn2Z9"><b>google form</b></a>
-            </Alert>
-        );
+                < >
+                < Alert variant = "success" className = "m-0 mt-1" >
+                Good Job! Please answer the < b > google form < /b> below
+            < /Alert>
+            < iframe
+            src = {src}
+            width = "640"
+            height = "2459"
+            frameborder = "0"
+            marginheight = "0"
+            marginwidth = "0" > Loading
+    …       </iframe>
+            < />
+        )
     }
+
+
 
     renderFooter() {
         return (
