@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: naorobot-989b9
+  PROJECT_ID: naorobothri-7e682
   SERVICE_NAME: flask-fire
   REGION: us-central1
 
@@ -26,7 +26,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
           project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NAOROBOT_989B9 }}
+          service_account_key: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NAOROBOTHRI_7e682 }}
           export_default_credentials: true
 
       # Build and push image to Google Container Registry
