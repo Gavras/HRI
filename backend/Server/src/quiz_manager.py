@@ -87,6 +87,8 @@ class QuizManager:
         if idx > len(self.questions):
             return f'idx must be less than {len(self.questions)}'
 
+        Thread(target=DataBase.insert_user_action, args=(name, idx, -1, 'get_question', with_robot)).start()
+
         if idx == 0:
             self.send_to_brain(f'start:{name}')
 
